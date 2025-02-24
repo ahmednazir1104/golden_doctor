@@ -35,7 +35,7 @@ class _CollectionProductsScreenState
     extends ConsumerState<CollectionProductsScreen> {
   @override
   void initState() {
-    print("iniit");
+    // print("iniit");
     Future.delayed(
         Duration(seconds: 0),
         () => {
@@ -47,7 +47,7 @@ class _CollectionProductsScreenState
 
   @override
   void didChangeDependencies() {
-    print("did change dependency");
+    // print("did change dependency");
     super.didChangeDependencies();
   }
 
@@ -57,7 +57,7 @@ class _CollectionProductsScreenState
   bool isLoading = true;
   @override
   Widget build(BuildContext context) {
-    print("build");
+    // print("build");
     allProducts = ref.watch(collectionsProductsProvider).productList;
 
     // --------------------------------------------------------
@@ -70,7 +70,7 @@ class _CollectionProductsScreenState
                   scrollController.position.maxScrollExtent &&
               scrollController.offset != _lastOffset) {
             // if (collectionProducts!.collection.products.pageInfo.hasNextPage) {
-            print("fetcing more");
+            // print("fetcing more");
             // _endCursor =
             //     collectionProducts.collection.products.pageInfo.endCursor;
             _lastOffset = scrollController.offset;
@@ -147,7 +147,7 @@ class _CollectionProductsScreenState
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                   // childAspectRatio: 6/9,
-                                  mainAxisExtent: 382.h,
+                                  mainAxisExtent: 332.h,
                                   // childAspectRatio: 9 / 18, //170 / 350,
                                   crossAxisSpacing: 10.w,
                                   mainAxisSpacing: 10.h,

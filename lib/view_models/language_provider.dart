@@ -22,9 +22,9 @@ extension Trans on String {
     AppConstant.selectedLanguage = ShearedprefService.getLanguage();
     // add  gloable language selected variable in place of this static language value.
     if(AppConstant.selectedLanguage! == "EN"){
-      if (kDebugMode) {
-        print("did not open file");
-      }
+      // if (kDebugMode) {
+      //   print("did not open file");
+      // }
       return this;
     }
     var translation = getLanguageTextfn(

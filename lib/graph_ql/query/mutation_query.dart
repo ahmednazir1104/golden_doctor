@@ -83,152 +83,150 @@
 
 String fetchProductwithCollectionIdfn(String id, {String? cursor}) {
   return '''query FetchProducts(\$numProducts: Int!, \$cursor: String) {
-      collection(id: "$id") {
-        products(first: \$numProducts, after: \$cursor) {
-          edges {
-            cursor
-            node {
-              title
-              vendor
-              tags
-              description
-              descriptionHtml
-              productType
-              publishedAt
-              onlineStoreUrl
-              options{
-              name
-              optionValues{
-                name
-                        }
-                    }
-              variants(first: 30) {
-                edges {
-                  node {
-                    id
+        collection(id: "$id") {
+            products(first: \$numProducts, after: \$cursor) {
+            edges {
+                cursor
+                node {
                     title
-                    image {
-                      url
+                    vendor
+                    tags
+                    description
+                    descriptionHtml
+                    productType
+                    publishedAt
+                    onlineStoreUrl
+                    options{
+                        name
+                        optionValues{
+                            name
+                        }
+                    }
+                    variants(first: 30) {
+                        edges {
+                            node {
+                                id
+                                title
+                                image {
+                                    url
                                 }
-                    price {
-                      amount
+                                price {
+                                    amount
                                 }
-                    sku
-                    compareAtPrice{
-                      amount
+                                sku
+                                compareAtPrice {
+                                    amount
                                 }
-                    availableForSale
-
-                    selectedOptions {
-                      name
-                      value
+                                availableForSale
+                                selectedOptions {
+                                    name
+                                    value
                                 }
                             }
                         }
                     }
-              images(first: 30) {
-                edges {
-                  node {
-                    url
-                    altText
+                    images(first: 30) {
+                        edges {
+                            node {
+                                url
+                                altText
                             }
                         }
                     }
-               metafields(identifiers: [
-                        {namespace: "custom",key: "product_recomandation"
-                        },
-                        {namespace: "custom", key: "embroidery_product"
-                        }
-                {namespace: "custom", key: "you_may_also_like"
-                        }
-                    ]) {
-                key
-                value
+                    metafields(identifiers: [
+                                {namespace: "custom",key: "product_recomandation"
+                                },
+                                {namespace: "custom", key: "embroidery_product"
+                                }
+                                {namespace: "custom", key: "you_may_also_like"
+                                }
+                            ]) {
+                        key
+                        value
                     }
-              id
+                    id
                 }
             }
-          pageInfo {
-          hasNextPage
-          hasPreviousPage
-          startCursor
-          endCursor
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                startCursor
+                endCursor
             }
         }
     }
-}''';
+}
+''';
 }
 // metafield(namespace:"custom",key:"fit"){
 //                 key
 //                 value
 //               }
 
-String fetchProductListByIDs(List<String> productIDs) {
+String fetchProductListByIDs(String productIDs) {
   return '''query getProductsByIds {
-  	nodes(ids: [${productIDs.iterator}
+  	nodes(ids: [$productIDs
     ]){ 
     	... on 
-      Product
-           {
-              title
-              vendor
-              tags
-              description
-              descriptionHtml
-              productType
-              publishedAt
-              onlineStoreUrl
-              options{
-              name
-              optionValues{
-                name
-                }
-            }
-              variants(first: 30) {
-                edges {
-                  node {
+      Product {
+        title
+                    vendor
+                    tags
+                    description
+                    descriptionHtml
+                    productType
+                    publishedAt
+                    onlineStoreUrl
+                    options{
+                        name
+                        optionValues{
+                            name
+                        }
+                    }
+                    variants(first: 30) {
+                        edges {
+                            node {
+                                id
+                                title
+                                image {
+                                    url
+                                }
+                                price {
+                                    amount
+                                }
+                                sku
+                                compareAtPrice {
+                                    amount
+                                }
+                                availableForSale
+                                selectedOptions {
+                                    name
+                                    value
+                                }
+                            }
+                        }
+                    }
+                    images(first: 30) {
+                        edges {
+                            node {
+                                url
+                                altText
+                            }
+                        }
+                    }
+                    metafields(identifiers: [
+                                {namespace: "custom",key: "product_recomandation"
+                                },
+                                {namespace: "custom", key: "embroidery_product"
+                                }
+                                {namespace: "custom", key: "you_may_also_like"
+                                }
+                            ]) {
+                        key
+                        value
+                    }
                     id
-                    title
-                    image {
-                      url
-                        }
-                    price {
-                      amount
-                        }
-                    sku
-                    compareAtPrice{
-                      amount
-                        }
-                    availableForSale
-
-                    selectedOptions {
-                      name
-                      value
-                        }
-                    }
-                }
-            }
-              images(first: 30) {
-                edges {
-                  node {
-                    url
-                    altText
-                    }
-                }
-            }
-               metafields(identifiers: [
-                {namespace: "custom",key: "product_recomandation"
-                },
-                {namespace: "custom", key: "embroidery_product"
-                }
-                {namespace: "custom", key: "you_may_also_like"
-                }
-            ]) {
-                key
-                value
-            }
-              id
-        }
+      }
     }
 }
 ''';
@@ -237,54 +235,63 @@ String fetchProductListByIDs(List<String> productIDs) {
 String fetchSignleProduct(String productID) {
   return '''query{
       product(id: "$productID") {
-            title
-              tags
-              description
-              descriptionHtml
-              productType
-              publishedAt
-              onlineStoreUrl
-              options{
-              name
-              values
+        title
+        vendor
+        tags
+        description
+        descriptionHtml
+        productType
+        publishedAt
+        onlineStoreUrl
+        options{
+            name
+            optionValues{
+                name
             }
-              variants(first: 30) {
-                edges {
-                  node {
+        }
+        variants(first: 30) {
+            edges {
+                node {
                     id
                     title
                     image {
-                      src
+                        url
                     }
                     price {
-                      amount
+                        amount
                     }
                     sku
                     compareAtPrice{
-                      amount
+                        amount
                     }
                     availableForSale
-
                     selectedOptions {
-                      name
-                      value
+                        name
+                        value
                     }
-                  }
                 }
-              }
-              images(first: 30) {
-                edges {
-                  node {
+            }
+        }
+        images(first: 30) {
+            edges {
+                node {
                     url
                     altText
-                  }
                 }
-              }
-               metafields(identifiers:[{namespace:"custom",key:"fit"},{namespace: "custom", key: "product_description"}]) {
-                key
-                value
-              }
-              id
+            }
+        }
+        metafields(identifiers: [
+                    {namespace: "custom",key: "product_recomandation"
+                    },
+                    {namespace: "custom", key: "embroidery_product"
+                    }
+                    {namespace: "custom", key: "you_may_also_like"
+                    }
+                ]) {
+            key
+            value
+        }
+        id
       }
     }''';
 }
@@ -452,12 +459,12 @@ String fetchAllOrders(String userToken) {
 
 const String finalsearchProducts =
     """  query ReadProductsByTag(\$Search: String!) {
-
   products(first: 39, query: \$Search) {
-          edges {
-            cursor
-            node {
+      edges {
+          cursor
+          node {
               title
+              vendor
               tags
               description
               descriptionHtml
@@ -465,55 +472,63 @@ const String finalsearchProducts =
               publishedAt
               onlineStoreUrl
               options{
-              name
-              values
-            }
-              variants(first: 30) {
-                edges {
-                  node {
-                    id
-                    title
-                    image {
-                      src
-                    }
-                    price {
-                      amount
-                    }
-                    sku
-                    compareAtPrice{
-                      amount
-                    }
-                    availableForSale
-
-                    selectedOptions {
+                  name
+                  optionValues{
                       name
-                      value
-                    }
                   }
-                }
+              }
+              variants(first: 30) {
+                  edges {
+                      node {
+                          id
+                          title
+                          image {
+                              url
+                          }
+                          price {
+                              amount
+                          }
+                          sku
+                          compareAtPrice {
+                              amount
+                          }
+                          availableForSale
+                          selectedOptions {
+                              name
+                              value
+                          }
+                      }
+                  }
               }
               images(first: 30) {
-                edges {
-                  node {
-                    url
-                    altText
+                  edges {
+                      node {
+                          url
+                          altText
+                      }
                   }
-                }
               }
-               metafields(identifiers:[{namespace:"custom",key:"fit"},{namespace: "custom", key: "product_description"}]) {
-                key
-                value
+              metafields(identifiers: [
+                          {namespace: "custom",key: "product_recomandation"
+                          },
+                          {namespace: "custom", key: "embroidery_product"
+                          }
+                          {namespace: "custom", key: "you_may_also_like"
+                          }
+                      ]) {
+                  key
+                  value
               }
               id
-            }
           }
-          pageInfo {
+      }
+      pageInfo {
           hasNextPage
           hasPreviousPage
           startCursor
           endCursor
-          }
-        }
+      }
+  }
 }
 
 """;
@@ -543,11 +558,100 @@ String reSetPasswordQuery({required String email}) {
 }
 
 String productQuantityQuery({required String productId}) {
-  return '''{"query":"\\n\\n\\nquery MyQuery {\\n  product(id: \\"$productId\\") {\\n    totalInventory\\n    variants(first: 15) {\\n      edges {\\n        node {\\n          quantityAvailable\\n          id\\n        }\\n      }\\n    }\\n  }\\n}","variables":{"id":"$productId"}}''';
+  return '''{"query":"\\n\\n\\nquery MyQuery {\\n  product(id: \\"$productId\\") {\\n    totalInventory\\n    variants(first: 100) {\\n      edges {\\n        node {\\n          quantityAvailable\\n          id\\n        }\\n      }\\n    }\\n  }\\n}","variables":{"id":"$productId"}}''';
 }
 
-String addToCartQuery({required String productListString}) {
-  return '''{"query":"mutation createCart(\$cartInput: CartInput, ) {\\n  cartCreate(input: \$cartInput,) {\\n    cart {\\n      id\\n      createdAt\\n      updatedAt\\n      lines(first:10) {\\n        edges {\\n          node {\\n            id\\n            merchandise {\\n              ... on ProductVariant {\\n                id\\n              }\\n            }\\n          }\\n        }\\n\\n      }\\n      attributes {\\n        key\\n        value\\n      }\\n      estimatedCost {\\n        totalAmount {\\n          amount\\n          currencyCode\\n        }\\n        subtotalAmount {\\n          amount\\n          currencyCode\\n        }\\n        totalTaxAmount {\\n          amount\\n          currencyCode\\n        }\\n        totalDutyAmount {\\n          amount\\n          currencyCode\\n        }\\n      }\\n    }\\n  }\\n}\\n","variables":{"cartInput":{"lines":$productListString}}}''';
+String newCartQuery(dynamic listofItems) {
+  return '''mutation {
+  cartCreate(input: {
+    lines: $listofItems
+    }
+) {
+    cart {
+      id
+      createdAt
+      updatedAt
+      lines(first: 5) {
+        edges {
+          node {
+            id
+            quantity
+            attribute(key: "your-key"){
+                key
+                value
+            }
+            merchandise {
+              ... on ProductVariant {
+                id
+                title
+                priceV2 {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  
+}
+''';
+}
+
+String addToCartQuery({required List productListString}) {
+  return ''' {
+    mutation createCart( "$productListString": String) {  
+        cartCreate(input: "$productListString") {    
+            cart {      
+                id      
+                createdAt      
+                updatedAt      
+                lines(first: 10) {        
+                    edges {          
+                        node {            
+                            id            
+                            merchandise {              
+                                ... on ProductVariant {                id              
+                                }            
+                            }            
+                            properties {              
+                                    key       
+                                    value            
+                            }          
+                        }        
+                    }      
+                }      
+                attributes {        
+                    key        
+                    value      
+                }      
+                estimatedCost {        
+                    totalAmount {          
+                        amount          
+                        currencyCode        
+                    }        
+                    subtotalAmount {          
+                        amount          
+                        currencyCode
+                    }        
+                    totalTaxAmount {          
+                        amount          
+                        currencyCode        
+                    }        
+                    totalDutyAmount {          
+                        amount          
+                        currencyCode
+                    }      
+                }    
+            }  
+        }
+    },
+}
+''';
+  // return '''{"query":"mutation createCart(\$cartInput: CartInput) {\n  cartCreate(input: \$cartInput) {\n    cart {\n      id\n      createdAt\n      updatedAt\n      lines(first: 10) {\n        edges {\n          node {\n            id\n            merchandise {\n              ... on ProductVariant {\n                id\n              }\n            }\n            properties {\n              key\n              value\n            }\n          }\n        }\n      }\n      attributes {\n        key\n        value\n      }\n      estimatedCost {\n        totalAmount {\n          amount\n          currencyCode\n        }\n        subtotalAmount {\n          amount\n          currencyCode\n        }\n        totalTaxAmount {\n          amount\n          currencyCode\n        }\n        totalDutyAmount {\n          amount\n          currencyCode\n        }\n      }\n    }\n  }\n}','variables':{"cartInput":{"lines":$productListString}}}''';
+  // return '''{"query":"mutation createCart(\$cartInput: CartInput, ) {\\n  cartCreate(input: \$cartInput,) {\\n    cart {\\n      id\\n      createdAt\\n      updatedAt\\n      lines(first:10) {\\n        edges {\\n          node {\\n            id\\n            merchandise {\\n              ... on ProductVariant {\\n                id\\n              }\\n            }\\n          }\\n        }\\n\\n      }\\n      attributes {\\n        key\\n        value\\n      }\\n      estimatedCost {\\n        totalAmount {\\n          amount\\n          currencyCode\\n        }\\n        subtotalAmount {\\n          amount\\n          currencyCode\\n        }\\n        totalTaxAmount {\\n          amount\\n          currencyCode\\n        }\\n        totalDutyAmount {\\n          amount\\n          currencyCode\\n        }\\n      }\\n    }\\n  }\\n}\\n","variables":{"cartInput":{"lines":$productListString}}}''';
 }
 
 String checkOutQuery({required String cartId}) {

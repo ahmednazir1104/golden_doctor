@@ -26,4 +26,5 @@ static const backgroundImage = "assets/app_images/backgroundImage.png";
   static const navigationIcon = "assets/app_images/navigationIcon.svg";
   static const profileIcon = "assets/app_images/profileIcon.svg";
   static const searchImages = "assets/app_images/searchImages.png";
+  static const noInternet = "assets/app_images/internet.png";
 }

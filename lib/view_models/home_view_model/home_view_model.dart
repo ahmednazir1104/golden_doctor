@@ -1,13 +1,18 @@
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:golden_doctor/graph_ql/config.dart';
+import 'package:golden_doctor/graph_ql/query/mutation_query.dart';
 import 'package:golden_doctor/models/home_model/home_model.dart';
+import 'package:golden_doctor/models/products/product_model.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class SectionsNotifier extends StateNotifier<AsyncValue<MainResponse?>> {
   SectionsNotifier() : super(const AsyncValue.loading());
 
   Future<void> fetchSections() async {
-     log('in the fetch section');
+    log('in the fetch section');
     //  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     try {
       // Fetch data from Firestore
@@ -16,14 +21,12 @@ class SectionsNotifier extends StateNotifier<AsyncValue<MainResponse?>> {
       //     .doc('homepage_sections')
       //     .get();
 
-
-        final doc = await FirebaseFirestore.instance
+      final doc = await FirebaseFirestore.instance
           .collection('home_page')
           .doc('homepage_sections')
           .get();
 
       if (doc.exists && doc.data() != null) {
-
         final data = doc.data()!;
         log('data ===== $data');
         // final sectionsModel = HomeModel.fromJson(data);
@@ -37,16 +40,49 @@ class SectionsNotifier extends StateNotifier<AsyncValue<MainResponse?>> {
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
-}
+
+  // Fetch products by product ids
+  Future<List<ProductNode>?> fetchProducts({String? productIDs}) async {
+    if (productIDs == null) return null;
+
+    GraphQlHelper graphQlHelper = GraphQlHelper();
+    QueryResult result = await graphQlHelper.client.value.query(
+      QueryOptions(
+        document: gql(fetchProductListByIDs(productIDs)),
+      ),
+    );
+
+    if (result.hasException) {
+      if (kDebugMode) {
+        print("GraphQL Error: ${result.exception!.graphqlErrors}");
+      }
+      return null;
+    }
+
+    // Data collectionProducts = Data.fromJson(result.data!);
+    List<ProductNode> productList = [];
+    if (result.data!['nodes'] != null) {
+      // print("1111111111111111111");
+      // print(json.encode(result.data!));
+      // print("2222222222222222222");
+
+      result.data!['nodes']
+          .map((e) => productList.add(ProductNode.fromJson((e))))
+          .toList();
+      // print("33333333333333333333333333333333");
+    }
+    // print("productList.length");
+    // print(productList.length);
+    return productList;
+  }
+
+ }
 
 // Create a provider for the SectionsNotifier
 final sectionsProvider =
     StateNotifierProvider<SectionsNotifier, AsyncValue<MainResponse?>>(
   (ref) => SectionsNotifier(),
 );
-
-
-
 
 // class UploadNotifier extends StateNotifier<UploadState> {
 //   UploadNotifier() : super(const UploadState());

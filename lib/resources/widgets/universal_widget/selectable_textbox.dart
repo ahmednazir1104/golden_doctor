@@ -36,7 +36,7 @@ class SelectableTextBox extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: AppTextStyles.headline2.copyWith(
+              style: AppTextStyles.headline3.copyWith(
                 color: isSelected ? AppColors.myScaffold : AppColors.myPrimary,
               ),
             ),

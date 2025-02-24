@@ -1,11 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:golden_doctor/ali_test.dart';
 import 'package:golden_doctor/views/authentication/forget_password.dart';
 import 'package:golden_doctor/views/authentication/login_screen.dart';
 import 'package:golden_doctor/views/authentication/signup_screen.dart';
+import 'package:golden_doctor/views/checkout/checkout_screen.dart';
 import 'package:golden_doctor/views/home_screen.dart';
 import 'package:golden_doctor/views/navigation_screen/navigation_screen.dart';
 import 'package:golden_doctor/views/product_detail_pages/embroidery_screen.dart';
+import 'package:golden_doctor/views/product_detail_pages/online_product_details.dart';
 import 'package:golden_doctor/views/product_detail_pages/product_detail_screen.dart';
 import 'package:golden_doctor/views/search_screen/search_screen.dart';
 import 'package:golden_doctor/views/splash_screen.dart';
@@ -36,7 +38,13 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/setBuilderScreen',
-      builder: (context, state) => const SetBuilderScreen(),
+      builder: (context, state) {
+        Map<String, dynamic> params = state.extra as Map<String, dynamic>;
+        return SetBuilderScreen(
+          collection1: params["collection1"],
+          collection2: params["collection2"],
+        );
+      },
     ),
     // GoRoute(
     //   path: '/collectionScreen',
@@ -71,8 +79,22 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/productDetailScreen',
-      builder: (context, state) => const ProductDetailScreen(),
+      name: "productDetailScreen",
+      builder: (context, state) {
+        Map<String, dynamic> params = state.extra as Map<String, dynamic>;
+        return ProductDetailScreen(
+          key: ValueKey(params["productNode"].id),
+          singleProduct: params["productNode"],
+        );
+      },
     ),
+    GoRoute(
+        path: '/online_product_detail_screen',
+        builder: (context, state) {
+          // print(state.extra);
+          Map<String, dynamic> params = state.extra as Map<String, dynamic>;
+          return OnlineProductDetails(productID: params["productID"]);
+        }),
 
     /////////////////////////////////////// For Testing Purpose ///////////////////////////////////////
     // GoRoute(
@@ -87,7 +109,15 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/embroidery_screen',
-      builder: (context, state) => const EmbroideryScreen(),
+      builder: (context, state) {
+        final Map<String, dynamic> params = state.extra as Map<String, dynamic>;
+        return EmbroideryScreen(
+          embroideryProductID: params["productID"],
+          tags: params["tags"],
+          parentId: params["parentId"],
+          uniquePageKey: params["uniquePageKey"],
+        );
+      },
     ),
     GoRoute(
       path: '/navigation_screen',
@@ -97,6 +127,15 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/search_screen',
       builder: (context, state) => SearchProducts(),
+    ),
+    GoRoute(
+      path: '/checkout_webview_screen',
+      builder: (context, state) {
+        Map<String, dynamic> checkoutURL = state.extra as Map<String, dynamic>;
+        return WebViewCheckout(
+          weburl: checkoutURL["checkouturl"],
+        );
+      },
     ),
     // GoRoute(
     //   path: '/cart_screen',

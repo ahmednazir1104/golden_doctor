@@ -16,7 +16,10 @@ class MachingPairWidgetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push('/setBuilderScreen');
+        context.push('/setBuilderScreen', extra: {
+          'collection1': section.body[0].objId,
+          'collection2': section.body[1].objId,
+        });
       },
       child: Container(
         height: double.parse(section.height.toString()),

@@ -5,7 +5,7 @@ double appPaddingLarge = 24.0;
 
 class AppConstant {
   static const String appName = 'SCRUBER';
-  static String selectedColor = '';
+  // static String selectedColor = '';
   static String? selectedLanguage;
 
   static const List<String> brandList = [

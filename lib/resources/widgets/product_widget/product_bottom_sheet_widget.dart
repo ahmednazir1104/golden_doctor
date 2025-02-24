@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:golden_doctor/models/cart/cart_model.dart';
+import 'package:golden_doctor/models/product_quantity_model.dart/product_quantity_model.dart';
 import 'package:golden_doctor/models/products/product_model.dart';
 import 'package:golden_doctor/resources/widgets/product_widget/color_palette_widget.dart';
 import 'package:golden_doctor/resources/widgets/universal_widget/app_button.dart';
@@ -9,15 +13,15 @@ import 'package:golden_doctor/resources/widgets/universal_widget/selectable_text
 import 'package:golden_doctor/utils/app_colors.dart';
 import 'package:golden_doctor/utils/app_fonts.dart';
 import 'package:golden_doctor/utils/app_images.dart';
+import 'package:golden_doctor/view_models/cart_view_model.dart';
+import 'package:golden_doctor/view_models/product_details_view_model.dart';
 
-import '../../../view_models/collection_product_view_model/product_details_view_model.dart';
-
-var list = [
-  {
-    "title": "black",
-    "code": "0xff2345f",
-  },
-];
+// var list = [
+//   {
+//     "title": "black",
+//     "code": "0xff2345f",
+//   },
+// ];
 
 class ProductBottomSheetWidget extends ConsumerStatefulWidget {
   final ProductNode singleProduct;
@@ -29,14 +33,15 @@ class ProductBottomSheetWidget extends ConsumerStatefulWidget {
 
 class _ProductBottomSheetWidgetState
     extends ConsumerState<ProductBottomSheetWidget> {
+  final uniquePageKey = DateTime.now().toUtc().toString();
   @override
   void initState() {
     ref
-        .read(productDetailsProvider.notifier)
+        .read(productDetailsProvider(uniquePageKey).notifier)
         .productQuentity(context, widget.singleProduct.id);
 
     Future.delayed(Duration(seconds: 0)).then((value) {
-      ref.read(productDetailsProvider.notifier).selectOption(
+      ref.read(productDetailsProvider(uniquePageKey).notifier).selectOption(
           widget.singleProduct.variants.edges[0].node.selectedOptions);
     });
     super.initState();
@@ -69,6 +74,16 @@ class _ProductBottomSheetWidgetState
     // var code = list.firstWhereOrNull((e){
     //   return e["title"] == color;
     // });
+    final cartRead = ref.read(cartProvider.notifier);
+    final List<CartModel> cartList = ref.watch(cartProvider);
+
+    final optionsWatch = ref.watch(productDetailsProvider(uniquePageKey));
+    final optionsRead =
+        ref.read(productDetailsProvider(uniquePageKey).notifier);
+    VariantsEdge selectedVariant =
+        optionsRead.selectVariant(purpleNode: widget.singleProduct);
+    ProductQuantityModel? productQuantityModel;
+
     return
         // code== null?
         // Text(color):
@@ -119,7 +134,7 @@ class _ProductBottomSheetWidgetState
                     child: CachedNetworkImage(
                       fit: BoxFit.fill,
                       imageUrl:
-                          widget.singleProduct.variants.edges[0].node.image.url,
+                          widget.singleProduct.images.edges[0].node.url,
                       // 'https://pixlr.com/images/generator/photo-generator.webp',
                       // height: 200.h,
                       placeholder: (context, url) => SizedBox(
@@ -198,36 +213,39 @@ class _ProductBottomSheetWidgetState
                     horizontal: 15,
                   ),
                   itemBuilder: (context, index) {
-                    Options singlePro = widget.singleProduct.options[index];
+                    Options singleProOption =
+                        widget.singleProduct.options[index];
 
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        singlePro.name == 'color'
+                        singleProOption.name == 'Color'
                             ? Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     // "SELECT COLOR ",
-                                    singlePro.name,
+                                    singleProOption.name,
                                     style: AppTextStyles.headline3.copyWith(
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                   Wrap(
                                     children: [
-                                      ...singlePro.optionValues.map(
+                                      ...singleProOption.optionValues.map(
                                         (e) => ColorPalateWidget(
-                                          colorName: e.name,
+                                          optionKey: singleProOption.name,
+                                          optionValue: e.name,
+                                          uniquePageKey: uniquePageKey,
                                         ),
                                       ),
                                     ],
                                   ),
                                 ],
                               )
-                            : singlePro.name == 'fit'
+                            : singleProOption.name == 'Length'
                                 ? Padding(
                                     padding: EdgeInsets.only(top: 29.h),
                                     child: Column(
@@ -236,7 +254,8 @@ class _ProductBottomSheetWidgetState
                                           children: [
                                             Text(
                                               // "SIZE TYPE  ",
-                                              singlePro.name.toUpperCase(),
+                                              singleProOption.name
+                                                  .toUpperCase(),
                                               style: AppTextStyles.headline3
                                                   .copyWith(
                                                 fontWeight: FontWeight.w700,
@@ -252,17 +271,43 @@ class _ProductBottomSheetWidgetState
                                           child: SizedBox(
                                             height: 29,
                                             child: ListView.builder(
-                                              itemCount:
-                                                  singlePro.optionValues.length,
+                                              itemCount: singleProOption
+                                                  .optionValues.length,
                                               scrollDirection: Axis.horizontal,
                                               itemBuilder: (context, index) {
                                                 OptionValuesModel singleOp =
-                                                    singlePro
+                                                    singleProOption
                                                         .optionValues[index];
-                                                return SelectableTextBox(
-                                                  text: singleOp.name,
-                                                  isSelected:
-                                                      index == 0 ? true : false,
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    var temp = optionsWatch
+                                                        .selectedOptions;
+                                                    temp[temp.indexWhere((e) =>
+                                                            e.name ==
+                                                            singleProOption
+                                                                .name)] =
+                                                        SelectedOption(
+                                                      name:
+                                                          singleProOption.name,
+                                                      value: singleOp.name,
+                                                    );
+
+                                                    optionsRead
+                                                        .selectOption(temp);
+                                                  },
+                                                  child: SelectableTextBox(
+                                                    text: singleOp.name,
+                                                    isSelected: singleOp.name ==
+                                                            optionsWatch
+                                                                .selectedOptions
+                                                                .firstWhere((x) =>
+                                                                    x.name ==
+                                                                    singleProOption
+                                                                        .name)
+                                                                .value
+                                                        ? true
+                                                        : false,
+                                                  ),
                                                 );
                                               },
                                             ),
@@ -271,7 +316,7 @@ class _ProductBottomSheetWidgetState
                                       ],
                                     ),
                                   )
-                                : singlePro.name == 'size'
+                                : singleProOption.name == 'Size'
                                     ? Padding(
                                         padding: EdgeInsets.only(top: 29.h),
                                         child: Column(
@@ -287,7 +332,7 @@ class _ProductBottomSheetWidgetState
                                               children: [
                                                 Text(
                                                   // "SIZE",
-                                                  singlePro.name,
+                                                  singleProOption.name,
                                                   style: AppTextStyles.headline3
                                                       .copyWith(
                                                     fontWeight: FontWeight.w700,
@@ -312,16 +357,44 @@ class _ProductBottomSheetWidgetState
                                                   ...
                                                   // AppConstant.sizesList
 
-                                                  singlePro.optionValues.map(
-                                                    (e) => SelectableTextBox(
-                                                      text: e.name,
-                                                      isSelected:
-                                                          // e.name
-                                                          //  == "XXL"
-                                                          //     ? true
-                                                          // :
-                                                          false,
-                                                      maxWidth: 50.w,
+                                                  singleProOption.optionValues
+                                                      .map(
+                                                    (e) => GestureDetector(
+                                                      onTap: () {
+                                                        var temp = optionsWatch
+                                                            .selectedOptions;
+                                                        temp[temp.indexWhere((e) =>
+                                                                e.name ==
+                                                                singleProOption
+                                                                    .name)] =
+                                                            SelectedOption(
+                                                          name: singleProOption
+                                                              .name,
+                                                          value: e.name,
+                                                        );
+
+                                                        optionsRead
+                                                            .selectOption(temp);
+                                                      },
+                                                      child: SelectableTextBox(
+                                                        text: e.name,
+                                                        isSelected: e.name ==
+                                                                optionsWatch
+                                                                    .selectedOptions
+                                                                    .firstWhere((x) =>
+                                                                        x.name ==
+                                                                        singleProOption
+                                                                            .name)
+                                                                    .value
+                                                            ? true
+                                                            : false,
+                                                        // e.name
+                                                        //  == "XXL"
+                                                        //     ? true
+                                                        // :
+                                                        // false,
+                                                        maxWidth: 50.w,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -453,7 +526,65 @@ class _ProductBottomSheetWidgetState
               // ),
 
               AppButtons.myprimaryButton(
-                onPressed: () {},
+                onPressed: () {
+                  int variantIndex = widget.singleProduct.variants.edges
+                      .indexOf(selectedVariant);
+                  if (kDebugMode) {
+                    print("Variant index = $variantIndex");
+                    print("Variant  = ${selectedVariant.node.title}");
+                  }
+                  productQuantityModel = ref
+                      .read(productDetailsProvider(uniquePageKey).notifier)
+                      .productQuantityModel;
+                  // print(productQuantityModel!.variants!.edges!.length);
+                  // print(jsonEncode(productQuantityModel));
+                  // check If item is already in cart or not
+                  if (cartList.any((element) {
+                        if (element.varientId == selectedVariant.node.id) {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      }) ==
+                      false) {
+                    if (kDebugMode) {
+                      print("new item");
+                      print(
+                          "${productQuantityModel!.variants!.edges![variantIndex].node!.quantityAvailable}");
+                    }
+                    if (productQuantityModel!.variants!.edges![variantIndex]
+                            .node!.quantityAvailable! >
+                        0) {
+                      cartRead.addCart(
+                        CartModel(
+                          isEmbroidery: false,
+                          available: true,
+                          // productGraphID: widget.singleProduct.gid,
+                          productColor: widget.singleProduct.id,
+                          varientId: selectedVariant.node.id,
+                          productPrice: selectedVariant.node.price.amount,
+                          productName:
+                              "${widget.singleProduct.title}\n${selectedVariant.node.title}",
+                          productImage: selectedVariant.node.image!.url,
+                          quantity: "1",
+                          comparePrice:
+                              selectedVariant.node.compareAtPrice?.amount,
+                          sku: selectedVariant.node.sku,
+                          productId: widget.singleProduct.id,
+                          vendor: widget.singleProduct.vendor,
+                        ),
+                      );
+                      Fluttertoast.showToast(msg: "Added In Cart");
+                    } else {
+                      Fluttertoast.showToast(msg: "Out Of Stock");
+                    }
+                  } else {
+                    if (kDebugMode) {
+                      print("old item");
+                    }
+                    Fluttertoast.showToast(msg: "Already in Cart");
+                  }
+                },
                 text: 'ADD TO BAG',
               ),
               SizedBox(height: 10),

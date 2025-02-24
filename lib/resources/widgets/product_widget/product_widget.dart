@@ -19,24 +19,32 @@ class ProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push("/productDetailScreen");
+        context.push(
+          "/productDetailScreen",
+          extra: {"productNode": singleProduct},
+          // "/online_product_detail_screen",
+          // extra: {"productID": singleProduct.id},
+        );
       },
       child: Container(
-        width: 145.w,
-        // height: 370,
-        // margin: EdgeInsets.only(left: 10.w),
+        width: 160.w,
         decoration: BoxDecoration(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AspectRatio(
-              aspectRatio: 6/8,
+            SizedBox(
+              height: 180.h,
               child: Stack(
                 children: [
                   Positioned.fill(
+                    // top: 0,
+                    // left: 0,
+                    // right: 0,
+                    // bottom: 0,
                     child: CachedNetworkImage(
                       fit: BoxFit.fill,
-                      imageUrl: singleProduct.variants.edges[0].node.image.url,
+                      imageUrl: singleProduct.images.edges[0].node.url,
+                      // imageUrl: singleProduct.variants.edges[0].node.image.url,
                       // 'https://pixlr.com/images/generator/photo-generator.webp',
                       // height: 200.h,
                       placeholder: (context, url) => SizedBox(
@@ -65,21 +73,8 @@ class ProductWidget extends StatelessWidget {
                           height: 24,
                           width: 24,
                           child: Center(
-                            child: FloatingActionButton(
-                              heroTag: "pl",
-                              backgroundColor: AppColors.myScaffold,
-                              elevation: 0,
-                              isExtended: false,
-                              mini: true,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100)),
-                              child: Icon(
-                                Icons.add,
-                                color: AppColors.myPrimary,
-                                size: 12.h,
-                                weight: 700,
-                              ),
-                              onPressed: () {
+                            child: InkWell(
+                              onTap: () {
                                 showModalBottomSheet(
                                   context: context,
                                   clipBehavior: Clip.antiAlias,
@@ -88,17 +83,26 @@ class ProductWidget extends StatelessWidget {
                                     singleProduct: singleProduct,
                                   ),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        // BorderRadius.only(
-                                        //   topLeft: Radius.circular(0),
-                                        //   topRight: Radius.circular(20),
-                                        // ),
-
-                                        BorderRadius.vertical(
-                                            top: Radius.circular(16)),
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(16),
+                                    ),
                                   ),
                                 );
                               },
+                              child: Container(
+                                height: 24,
+                                width: 24,
+                                decoration: BoxDecoration(
+                                  color: AppColors.myScaffold,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  color: AppColors.myPrimary,
+                                  size: 12.h,
+                                  weight: 700,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -125,25 +129,32 @@ class ProductWidget extends StatelessWidget {
             //   ),
             // ),
 
-            Container(
-              width: 57.w,
-              height: 31.h,
-              margin: EdgeInsets.only(top: 7.h, bottom: 12.h),
-              decoration: BoxDecoration(
-                color: AppColors.greyCA,
-                borderRadius: BorderRadius.circular(70.r),
-              ),
-              child: Center(
-                child: Text(
-                  'Infinity',
-                  style: AppTextStyles.body2,
+            IntrinsicWidth(
+              child: Container(
+                // width: 57.w,
+                height: 31.h,
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                margin: EdgeInsets.only(top: 7.h, bottom: 12.h),
+                decoration: BoxDecoration(
+                  color: AppColors.greyCA,
+                  borderRadius: BorderRadius.circular(70.r),
+                ),
+                child: Center(
+                  child: Text(
+                    singleProduct.vendor!,
+                    // 'Infinity',
+                    style: AppTextStyles.body2,
+                  ),
                 ),
               ),
             ),
             SizedBox(
               width: 100.w,
               child: Text(
-                "Infinity Women's Split Neck Top…",
+                singleProduct.title,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                // "Infinity Women's Split Neck Top…",
                 style: AppTextStyles.body2.copyWith(fontSize: 12.sp),
               ),
             ),
@@ -151,16 +162,26 @@ class ProductWidget extends StatelessWidget {
               padding: EdgeInsets.only(top: 10.h),
               child: Row(
                 children: [
-                  Text(
-                    "Color Name",
-                    style: AppTextStyles.body2.copyWith(fontSize: 12.sp),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 5.w),
-                    // width: 125.w,
+                  Flexible(
                     child: Text(
-                      "06 Colors",
-                      style: AppTextStyles.body3.copyWith(fontSize: 12.sp),
+                      singleProduct
+                          .variants.edges[0].node.selectedOptions[0].value,
+                      style: AppTextStyles.body2.copyWith(fontSize: 12.sp),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Flexible(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 5.w),
+                      // width: 125.w,
+                      child: Text(
+                        singleProduct.options[0].optionValues.length > 1
+                            ? "${singleProduct.options[0].optionValues.length} Colors"
+                            : "${singleProduct.options[0].optionValues.length} Color",
+                        // "06 Colors",
+                        style: AppTextStyles.body3.copyWith(fontSize: 12.sp),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ],
@@ -168,9 +189,8 @@ class ProductWidget extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.only(top: 5.h),
-              // width: 125.w,
               child: Text(
-                "SAR 350",
+                "SAR ${singleProduct.variants.edges[0].node.price.amount.split(".")[0]}",
                 style: AppTextStyles.headline2.copyWith(
                   fontSize: 17.sp,
                   fontWeight: FontWeight.bold,
@@ -181,86 +201,5 @@ class ProductWidget extends StatelessWidget {
         ),
       ),
     );
-
-    //  SizedBox(
-    //   // color: AppColors.black1C,
-    //   width: 159.w,
-    //   child: Padding(
-    //     padding: EdgeInsets.only(left: 12.w),
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.start,
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       mainAxisSize: MainAxisSize.min,
-    //       children: [
-    //         Container(
-    //           height: 192.h,
-    //           width: 159.w,
-    //           decoration: BoxDecoration(
-    //             color: AppColors.greyCA,
-    //             borderRadius: BorderRadius.circular(4.r),
-    //             image: DecorationImage(
-    //               fit: BoxFit.cover,
-    //               image: AssetImage(
-    //                 AppImages.women1Image,
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //         Container(
-    //           width: 57.w,
-    //           height: 31.h,
-    //           margin: EdgeInsets.only(top: 7.h, bottom: 12.h),
-    //           decoration: BoxDecoration(
-    //             color: AppColors.greyCA,
-    //             borderRadius: BorderRadius.circular(70.r),
-    //           ),
-    //           child: Center(
-    //             child: Text(
-    //               'Infinity',
-    //               style: AppTextStyles.body2,
-    //             ),
-    //           ),
-    //         ),
-    //         SizedBox(
-    //           width: 100.w,
-    //           child: Text(
-    //             "Infinity Women's Split Neck Top…",
-    //             style: AppTextStyles.body2.copyWith(fontSize: 12.sp),
-    //           ),
-    //         ),
-    //         Padding(
-    //           padding: EdgeInsets.only(top: 10.h),
-    //           child: Row(
-    //             children: [
-    //               Text(
-    //                 "Color Name",
-    //                 style: AppTextStyles.body2.copyWith(fontSize: 12.sp),
-    //               ),
-    //               Padding(
-    //                 padding: EdgeInsets.only(left: 5.w),
-    //                 // width: 125.w,
-    //                 child: Text(
-    //                   "06 Colors",
-    //                   style: AppTextStyles.body3.copyWith(fontSize: 12.sp),
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //         Padding(
-    //           padding: EdgeInsets.only(top: 5.h),
-    //           // width: 125.w,
-    //           child: Text(
-    //             "SAR 350",
-    //             style: AppTextStyles.headline2.copyWith(
-    //               fontSize: 17.sp,
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

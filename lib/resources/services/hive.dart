@@ -1,22 +1,24 @@
 import 'dart:io';
 
+import 'package:golden_doctor/models/cart/cart_model.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HiveService {
-  static String localWishList = 'WsihListBox';
+  // static String localWishList = 'WsihListBox';
+  static Box<CartListModel>? localCartBox;
   static String localCart = 'CartBox';
-
-  // static Box<WishlistModel>? locaWishListBox;
-  // static Box<CartModel>? locaCartBox;
 
   static Future hiveinitialize() async {
     Directory directory = await getApplicationDocumentsDirectory();
     Hive
-      .init(directory.path);
+      ..init(directory.path)
       // ..registerAdapter(WishListAdapter())
-      // ..registerAdapter(CartModelAdapter());
+      ..registerAdapter(CartListModelAdapter())
+      ..registerAdapter(CartModelAdapter())
+      ..registerAdapter(EmbroideryOptionsAdapter());
     // locaWishListBox = await Hive.openBox<WishlistModel>(localWishList);
+    localCartBox = await Hive.openBox<CartListModel>(localCart);
   }
 
   static getFromHive({required String table, required String key}) async {
@@ -46,40 +48,5 @@ class HiveService {
     List list = await box.get(key);
     list.removeAt(index);
     box.put(key, list);
-  }
-}
-
-class Todo {
-  final String id;
-  final String title;
-  final bool completed;
-
-  Todo({
-    required this.id,
-    required this.title,
-    required this.completed,
-  });
-}
-
-class TodoSaverService {
-  static const _boxName = 'todos';
-
-  static Future<void> init() async {
-    await Hive.openBox<Todo>(_boxName);
-  }
-
-  static Future<void> saveTodo(Todo todo) async {
-    final box = await Hive.openBox<Todo>(_boxName);
-    await box.put(todo.id, todo);
-  }
-
-  static Future<void> removeTodo(String todoId) async {
-    final box = await Hive.openBox<Todo>(_boxName);
-    await box.delete(todoId);
-  }
-
-  static Future<List<Todo>> getTodos() async {
-    final box = await Hive.openBox<Todo>(_boxName);
-    return box.values.toList();
   }
 }

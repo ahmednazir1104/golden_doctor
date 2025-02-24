@@ -56,7 +56,6 @@ class Collection {
       };
 }
 
-
 class PageInfo {
   final bool hasNextPage;
   final bool hasPreviousPage;
@@ -134,11 +133,11 @@ class ProductNode {
   final String title;
   final String? vendor;
   final List<String> tags;
-  final String description;
-  final String descriptionHtml;
-  final String productType;
-  final DateTime publishedAt;
-  final String onlineStoreUrl;
+  final String? description;
+  final String? descriptionHtml;
+  final String? productType;
+  final DateTime? publishedAt;
+  final String? onlineStoreUrl;
   final Variants variants;
   final Images images;
   final String id;
@@ -170,28 +169,32 @@ class ProductNode {
     this.youMayAlsoLikeMetafield,
   });
 
-  factory ProductNode.fromJson(Map<String, dynamic> json) => ProductNode(
-        gid: json["gid"] ?? "N/A",
-        productQuantity: json['quantityAvailable'] ?? "N/A",
-        title: json["title"] ?? "N/A",
-        vendor: json["vendor"] ?? "N/A",
-        tags: List<String>.from(json["tags"].map((x) => x)),
-        description: json["description"] ?? "N/A",
-        descriptionHtml: json["descriptionHtml"] ?? "N/A",
-        productType: json["productType"] ?? "N/A",
-        publishedAt: DateTime.parse(json["publishedAt"]),
-        onlineStoreUrl: json["onlineStoreUrl"] ?? "N/A",
-        variants: Variants.fromJson(json["variants"]),
-        images: Images.fromJson(json["images"]),
-        id: json["id"] ?? "N/A",
-        options:
-            List<Options>.from(json["options"].map((x) => Options.fromJson(x))),
-        emborideryMetafield: _getValueForKey(items: json["metafields"], key: "embroidery_product"),
-        productRecomandationMetafield: _getValueForKey(
-            items: json["metafields"], key: "product_recomandation"),
-        youMayAlsoLikeMetafield: _getValueForKey(
-            items: json["metafields"], key: "you_may_also_like"),
-      );
+  factory ProductNode.fromJson(Map<String, dynamic> json) {
+    print(json["title"]);
+    return ProductNode(
+      gid: json["id"] ?? "N/A",
+      productQuantity: json['quantityAvailable'] ?? "N/A",
+      title: json["title"] ?? "N/A",
+      vendor: json["vendor"] ?? "N/A",
+      tags: List<String>.from(json["tags"].map((x) => x)),
+      description: json["description"] ?? "N/A",
+      descriptionHtml: json["descriptionHtml"] ?? "N/A",
+      productType: json["productType"] ?? "N/A",
+      publishedAt: DateTime.parse(json["publishedAt"]),
+      onlineStoreUrl: json["onlineStoreUrl"] ?? "N/A",
+      variants: Variants.fromJson(json["variants"]),
+      images: Images.fromJson(json["images"]),
+      id: json["id"] ?? "N/A",
+      options:
+          List<Options>.from(json["options"].map((x) => Options.fromJson(x))),
+      emborideryMetafield:
+          _getValueForKey(items: json["metafields"], key: "embroidery_product"),
+      productRecomandationMetafield: _getValueForKey(
+          items: json["metafields"], key: "product_recomandation"),
+      youMayAlsoLikeMetafield:
+          _getValueForKey(items: json["metafields"], key: "you_may_also_like"),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "gid": gid,
@@ -201,7 +204,7 @@ class ProductNode {
         "description": description,
         "descriptionHtml": descriptionHtml,
         "productType": productType,
-        "publishedAt": publishedAt.toIso8601String(),
+        "publishedAt": publishedAt?.toIso8601String(),
         "onlineStoreUrl": onlineStoreUrl,
         "variants": variants.toJson(),
         "images": images.toJson(),
@@ -342,11 +345,11 @@ class VariantsEdge {
 class TentacledNode {
   final String id;
   final String title;
-  final ProductImage image;
+  final ProductImage? image;
   final Price price;
-  final String sku;
+  final String? sku;
   final Price? compareAtPrice;
-  final bool availableForSale;
+  final bool? availableForSale;
   final List<SelectedOption> selectedOptions;
 
   TentacledNode({
@@ -363,7 +366,8 @@ class TentacledNode {
   factory TentacledNode.fromJson(Map<String, dynamic> json) => TentacledNode(
         id: json["id"],
         title: json["title"] ?? "N/A",
-        image: ProductImage.fromJson(json["image"]),
+        image:
+            json["image"] != null ? ProductImage.fromJson(json["image"]) : null,
         price: Price.fromJson(json["price"]),
         sku: json["sku"] ?? "N/A",
         compareAtPrice: json["compareAtPrice"] != null
@@ -377,7 +381,7 @@ class TentacledNode {
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
-        "image": image.toJson(),
+        "image": image?.toJson(),
         "price": price.toJson(),
         "sku": sku,
         "compareAtPrice": compareAtPrice?.toJson(),
@@ -438,7 +442,6 @@ class SelectedOption {
         "value": value,
       };
 }
-
 
 // To parse this JSON data, do
 //
