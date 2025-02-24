@@ -206,57 +206,262 @@ class NavigationScreen extends ConsumerWidget {
                                                   (e) {
                                                     return InkWell(
                                                       onTap: () {
-                                                       if (e.type == 'collections') {
+                                                        if (e.type ==
+                                                            'collections') {
                                                           log('collections========');
                                                           context.push(
                                                             "/collection_product_screen",
                                                             extra: {
-                                                              "collectionID": e.objId,
-                                                              "collectionName": e.objName,
+                                                              "collectionID":
+                                                                  e.objId,
+                                                              "collectionName":
+                                                                  e.objName,
                                                             },
                                                           );
-                                                        // } else if (singleBrand.objType == 'product') {
-                                                        //   log('product========');
-                                                        // } else if (singleBrand.objType == 'brands') {
-                                                        //   log('brands========');
-                                                        //    context.push(
-                                                        //     "/collection_product_screen",
-                                                        //     extra: {
-                                                        //       "collectionID": singleBrand.objId,
-                                                        //       "collectionName": singleBrand.objName,
-                                                        //     },
-                                                        //   );
+                                                        } else if (e.type ==
+                                                            'product') {
+                                                          log('product========');
+                                                        } else if (e.type ==
+                                                            'brands') {
+                                                          log('brands========');
+                                                          context.push(
+                                                            "/collection_product_screen",
+                                                            extra: {
+                                                              "collectionID":
+                                                                  e.objId,
+                                                              "collectionName":
+                                                                  e.objName,
+                                                            },
+                                                          );
                                                         } else {
                                                           log('product========');
                                                         }
                                                       },
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 27.w,
-                                                                top: 13.h),
-                                                        child: Text(
-                                                          e.label
-                                                                      .toString()
-                                                                      .tr ==
-                                                                  ''
-                                                              ? "NA"
-                                                              : e.label
-                                                                  .toString()
-                                                                  .tr,
-                                                          //  ?? "N?A",
-                                                          style: AppTextStyles
-                                                              .lable1
-                                                              .copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 14.sp,
-                                                            color: AppColors
-                                                                .black28,
-                                                          ),
-                                                        ),
-                                                      ),
+                                                      child:
+
+                                                          /////////////////////////////////////////////////////////////
+                                                          e.children != null &&
+                                                                  e.children!
+                                                                      .isNotEmpty
+                                                              ?
+                                                              /////////////////
+                                                              // Text(
+                                                              //     'child length = ${e.children!.length}')
+
+                                                              ExpansionTile(
+                                                                  shape: Border(
+                                                                      // bottom: BorderSide(
+                                                                      //   // color: AppColors.redFB71,
+                                                                      // ),
+                                                                      ),
+                                                                  collapsedShape:
+                                                                      Border(
+                                                                          // br
+                                                                          ),
+                                                                  expandedCrossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  dense: true,
+                                                                  expandedAlignment:
+                                                                      Alignment
+                                                                          .centerLeft,
+                                                                  iconColor: Colors
+                                                                      .transparent,
+                                                                  collapsedIconColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  initiallyExpanded:
+                                                                      true,
+                                                                  onExpansionChanged:
+                                                                      (value) {
+                                                                    // Prevent collapsing by keeping `isExpanded` true
+                                                                    // setState(() {
+                                                                    //   isExpanded = true;
+                                                                    // });
+                                                                  },
+                                                                  // isExpanded[data.indexOf(e)] ==
+                                                                  //         index
+                                                                  //     ? true
+                                                                  //     : false,
+                                                                  // index == 0 ? true : false,
+                                                                  tilePadding:
+                                                                      EdgeInsets
+                                                                          .zero,
+                                                                  childrenPadding:
+                                                                      EdgeInsets
+                                                                          .zero,
+                                                                  title:
+                                                                      Container(
+                                                                    width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width,
+                                                                    padding: EdgeInsets.only(
+                                                                        top: 28.h,
+                                                                        //  bottom: 9.h,
+                                                                        left: 27.w),
+                                                                    decoration: BoxDecoration(
+                                                                        // color: AppColors.black1C,
+                                                                        // border: Border(
+                                                                        //   bottom: BorderSide(
+                                                                        //     color: AppColors.myPrimary,
+                                                                        //   ),
+                                                                        // ),
+                                                                        ),
+                                                                    child: Text(
+                                                                      e.label.toString().tr ==
+                                                                              ''
+                                                                          ? 'NA'
+                                                                          : e.label ??
+                                                                              "N/A",
+                                                                      style: AppTextStyles
+                                                                          .body1
+                                                                          .copyWith(
+                                                                        color: AppColors
+                                                                            .black28,
+                                                                        fontSize:
+                                                                            14.sp,
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  children: [
+                                                                    Divider(),
+                                                                    ...e.children!
+                                                                        .map(
+                                                                      (e) {
+                                                                        return InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            if (e.type ==
+                                                                                'collections') {
+                                                                              log('collections========');
+                                                                              context.push(
+                                                                                "/collection_product_screen",
+                                                                                extra: {
+                                                                                  "collectionID": e.objId,
+                                                                                  "collectionName": e.objName,
+                                                                                },
+                                                                              );
+                                                                            } else if (e.type ==
+                                                                                'product') {
+                                                                              log('product========');
+                                                                            } else if (e.type ==
+                                                                                'brands') {
+                                                                              log('brands========');
+                                                                              context.push(
+                                                                                "/collection_product_screen",
+                                                                                extra: {
+                                                                                  "collectionID": e.objId,
+                                                                                  "collectionName": e.objName,
+                                                                                },
+                                                                              );
+                                                                            } else {
+                                                                              log('product========');
+                                                                            }
+                                                                          },
+                                                                          child:
+                                                                              Padding(
+                                                                            padding:
+                                                                                EdgeInsets.only(left: 27.w, top: 13.h),
+                                                                            child:
+                                                                                Text(
+                                                                              e.label.toString().tr == '' ? "NA" : e.label.toString().tr,
+                                                                              //  ?? "N?A",
+                                                                              style: AppTextStyles.lable1.copyWith(
+                                                                                fontWeight: FontWeight.w600,
+                                                                                fontSize: 14.sp,
+                                                                                color: AppColors.black28,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                )
+
+                                                              ///////////
+
+                                                              : Padding(
+                                                                  padding: EdgeInsets.only(
+                                                                      left:
+                                                                          27.w,
+                                                                      top:
+                                                                          13.h),
+                                                                  child: Text(
+                                                                    e.label.toString().tr ==
+                                                                            ''
+                                                                        ? "NA"
+                                                                        : e.label
+                                                                            .toString()
+                                                                            .tr,
+                                                                    //  ?? "N?A",
+                                                                    style: AppTextStyles
+                                                                        .lable1
+                                                                        .copyWith(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontSize:
+                                                                          14.sp,
+                                                                      color: AppColors
+                                                                          .black28,
+                                                                    ),
+                                                                  ),
+                                                                ),
                                                     );
+
+                                                    //  [
+                                                    //     Divider(),
+                                                    //     ...e.children![index]
+                                                    //         .children!
+                                                    //         .map(
+                                                    //       (e) {
+                                                    //         return InkWell(
+                                                    //           onTap: () {
+
+                                                    //             // if (e.type == 'collections') {
+                                                    //             //   log('collections========');
+                                                    //             //   context.push(
+                                                    //             //     "/collection_product_screen",
+                                                    //             //     extra: {
+                                                    //             //       "collectionID": e.objId,
+                                                    //             //       "collectionName": e.objName,
+                                                    //             //     },
+                                                    //             //   );
+                                                    //             // } else if (e.type == 'product') {
+                                                    //             //   log('product========');
+                                                    //             // } else if (e.type == 'brands') {
+                                                    //             //   log('brands========');
+                                                    //             //   context.push(
+                                                    //             //     "/collection_product_screen",
+                                                    //             //     extra: {
+                                                    //             //       "collectionID": e.objId,
+                                                    //             //       "collectionName": e.objName,
+                                                    //             //     },
+                                                    //             //   );
+                                                    //             // } else {
+                                                    //             //   log('product========');
+                                                    //             // }
+                                                    //           },
+                                                    //           child: Padding(
+                                                    //             padding: EdgeInsets.only(left: 27.w, top: 13.h),
+                                                    //             child: Text(
+                                                    //               e.label.toString().tr == '' ? "NA" : e.label.toString().tr,
+                                                    //               //  ?? "N?A",
+                                                    //               style: AppTextStyles.lable1.copyWith(
+                                                    //                 fontWeight: FontWeight.w600,
+                                                    //                 fontSize: 14.sp,
+                                                    //                 color: AppColors.black28,
+                                                    //               ),
+                                                    //             ),
+                                                    //           ),
+                                                    //         );
+                                                    //       },
+                                                    //     ),
+                                                    //   ]));
                                                   },
                                                 ),
                                               ]);
