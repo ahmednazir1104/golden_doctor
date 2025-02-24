@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:golden_doctor/utils/app_colors.dart';
 import 'package:golden_doctor/utils/app_constant.dart';
 import 'package:golden_doctor/utils/app_fonts.dart';
@@ -205,14 +206,29 @@ class NavigationScreen extends ConsumerWidget {
                                                   (e) {
                                                     return InkWell(
                                                       onTap: () {
-                                                        // context.push(
-                                                        //   "/collection_product_screen",
-                                                        //   extra: {
-                                                        //     "collectionID":
-                                                        //         e.graphqlId,
-                                                        //     "collectionName": e.title,
-                                                        //   },
-                                                        // );
+                                                       if (e.type == 'collections') {
+                                                          log('collections========');
+                                                          context.push(
+                                                            "/collection_product_screen",
+                                                            extra: {
+                                                              "collectionID": e.objId,
+                                                              "collectionName": e.objName,
+                                                            },
+                                                          );
+                                                        // } else if (singleBrand.objType == 'product') {
+                                                        //   log('product========');
+                                                        // } else if (singleBrand.objType == 'brands') {
+                                                        //   log('brands========');
+                                                        //    context.push(
+                                                        //     "/collection_product_screen",
+                                                        //     extra: {
+                                                        //       "collectionID": singleBrand.objId,
+                                                        //       "collectionName": singleBrand.objName,
+                                                        //     },
+                                                        //   );
+                                                        } else {
+                                                          log('product========');
+                                                        }
                                                       },
                                                       child: Padding(
                                                         padding:
