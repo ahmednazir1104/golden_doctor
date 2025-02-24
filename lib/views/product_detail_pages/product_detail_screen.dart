@@ -5,7 +5,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:golden_doctor/resources/widgets/product_widget/color_palette_Widget.dart';
-import 'package:golden_doctor/resources/widgets/product_widget/product_bottom_sheet_widget.dart';
 import 'package:golden_doctor/resources/widgets/universal_widget/app_button.dart';
 import 'package:golden_doctor/resources/widgets/universal_widget/selectable_textbox.dart';
 import 'package:golden_doctor/utils/app_colors.dart';
