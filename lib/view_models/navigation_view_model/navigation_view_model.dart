@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +7,7 @@ class NavigationViewModel extends StateNotifier<AsyncValue<NavigationModel?>> {
   NavigationViewModel() : super(const AsyncValue.loading());
 
   Future<void> fetchNavigation() async {
-    log('in the fetch section');
+    // log('in the fetch section');
     //  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     try {
       // Fetch data from Firestore

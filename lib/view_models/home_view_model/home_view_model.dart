@@ -28,10 +28,10 @@ class SectionsNotifier extends StateNotifier<AsyncValue<MainResponse?>> {
 
       if (doc.exists && doc.data() != null) {
         final data = doc.data()!;
-        log('data ===== $data');
+        // log('data ===== $data');
         // final sectionsModel = HomeModel.fromJson(data);
         MainResponse response = MainResponse.fromJson(data);
-        log('sectionsModel  ===== ${response.sections[0]}');
+        // log('sectionsModel  ===== ${response.sections[0]}');
         state = AsyncValue.data(response);
       } else {
         throw Exception("Document does not exist or has no data");

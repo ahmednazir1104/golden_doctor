@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'dart:developer';
-
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -136,42 +137,72 @@ class ApiClass extends ChangeNotifier {
 
 // logout
   logOut(BuildContext context) {
-    ShearedprefService.logoutAccount().then((value) {
-      ShearedprefService.setintroScreen(true);
-    });
+    ShearedprefService.setUserLoggedIn(false);
+    ShearedprefService.setUserAccessToken("");
+    profileModel = null;
+    // ShearedprefService.logoutAccount().then((value) {
+    //   ShearedprefService.setUserLoggedIn(false);
+    //   ShearedprefService.setUserAccessToken("");
+    // });
     setUserLoginStatus(false);
     Fluttertoast.showToast(msg: " Logout Successfully ");
-    context.go("/wellcomeScreen");
+    // context.go("/wellcomeScreen");
   }
 
 // Profile
   Future<void> profile(
-    BuildContext context,
+ 
     String token,
   ) async {
     addboleanValue(true);
-    Future.delayed(Duration(seconds: 7)).then(
-      (value) {
-        if (boleanValue == true) {
-          return addboleanValue(false);
+    String userToken = ShearedprefService.getUserAccessToken()!;
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://scrubser.myshopify.com/api/2025-01/graphql.json'),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token':
+              '1acbba2f06475c4427254dd8372b60e7',
+        },
+        body: json.encode({
+          'query': '''
+        query GetCustomer(\$customerAccessToken: String!) {
+          customer(customerAccessToken: \$customerAccessToken) {
+            id
+            firstName
+            lastName
+            email
+            phone
+            acceptsMarketing
+          }
         }
-      },
-    );
-    ApiBaseHelper apiBaseHelper = ApiBaseHelper();
-    String body = profileQuery(token: token);
-    Map<String, dynamic> response =
-        await apiBaseHelper.post(url: '', data: body);
-    if (kDebugMode) {
-      print(response);
-    }
-    if (response["data"]["customer"].toString() != "null") {
-      Map<String, dynamic> accessToken = response['data']['customer'];
-      profileModel = ProfileModel.fromJson(accessToken);
-      addboleanValue(false);
-    } else {
-      if (kDebugMode) {
-        print("Error");
+      ''',
+          'variables': {
+            'customerAccessToken': userToken,
+          },
+        }),
+      );
+
+      // print('Status Code: ${response.statusCode}');
+      // print('Response Body: ${response.body}');
+      // print('Response Headers: ${response.headers}');
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        log('response === $data');
+        profileModel = ProfileModel.fromJson(data['data']['customer']);
+        log('Customer Data: ${profileModel!.email}');
+        log('Customer Data: $profileModel');
+        // print('Customer Data: $profileModel');
+        // print('Customer Data: $data');
+        addboleanValue(false);
+      } else {
+        print('Error: ${response.statusCode}');
+        addboleanValue(false);
       }
+    } catch (e) {
+      print('Exception: $e');
       addboleanValue(false);
     }
   }

@@ -550,7 +550,18 @@ String signInQuery({
 }
 
 String profileQuery({required String token}) {
-  return '''{"query":"query {\\n  customer(customerAccessToken: \\"$token\\") {\\n    id\\n    firstName\\n    lastName\\n    email\\n    phone\\n    defaultAddress {\\n      id\\n      address1\\n      address2\\n      city\\n      province\\n      country\\n      zip\\n    }\\n  }\\n}","variables":{}}''';
+  return '''
+            query GetCustomer(\$customerAccessToken: String!) {
+              customer(customerAccessToken: $token) {
+                id
+                firstName
+                lastName
+                email
+                phone
+                acceptsMarketing
+              }
+            }
+          ''';
 }
 
 String reSetPasswordQuery({required String email}) {

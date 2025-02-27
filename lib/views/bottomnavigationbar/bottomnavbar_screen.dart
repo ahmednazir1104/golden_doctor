@@ -5,6 +5,7 @@ import 'package:golden_doctor/utils/app_colors.dart';
 import 'package:golden_doctor/utils/app_images.dart';
 import 'package:golden_doctor/view_models/home_view_model/home_view_model.dart';
 import 'package:golden_doctor/view_models/navigation_view_model/navigation_view_model.dart';
+import 'package:golden_doctor/views/authentication/profile_screen.dart';
 import 'package:golden_doctor/views/home_screen.dart';
 import 'package:golden_doctor/views/navigation_screen/navigation_screen.dart';
 
@@ -23,7 +24,7 @@ class _BottomnavbarScreenState extends ConsumerState<BottomnavbarScreen> {
     const HomeScreen(),
     const NavigationScreen(),
     CartScreen(),
-    const Text('seeting'),
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -49,6 +50,12 @@ class _BottomnavbarScreenState extends ConsumerState<BottomnavbarScreen> {
     ref.read(navigationprovider.notifier).fetchNavigation();
 //  ref.watch(sectionsProvider);
     // final sectionsState = ref.watch(sectionsProvider);
+    // final authenticationrepository = ref.watch(apiServiceProvider);
+    // // final authenticationrepositoryRead = ref.read(apiServiceProvider.notifier); 
+    // String userToken = ShearedprefService.getUserAccessToken()!;
+    // if (authenticationrepository.profileModel == null) {
+    //   authenticationrepository.profile(context, userToken);
+    // }
     return Scaffold(
       body: Center(
         child: widgetOptions.elementAt(_selectedIndex),

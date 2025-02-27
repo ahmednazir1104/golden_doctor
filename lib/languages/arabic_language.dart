@@ -11,7 +11,6 @@
   'of Today’s Fashion': 'من موضة اليوم',
   'Scrubser  here. Anytime. Anywhere.': 'المغسلة هنا . في أي وقت. في أي مكان.',
   'Get Started': 'ابدأ',
-
   // Well Come Screen
   "Let's Shop Now!": "دعونا نتسوق الآن!",
   "Dive in and discover a world of possibilities\n waiting for you.":
@@ -20,7 +19,6 @@
   "Create an Account": "إنشاء حساب",
   "or": "أو",
   "Continue as a Guest": "الاستمرار كضيف",
-
   // Login Screen
   "Welcome Back, Shopioholic!": "مرحبًا بك مرة أخرى، محبي التسوق!",
   "We are thrilled to have you back! Log in to Shopio and shop till you drop.":
@@ -35,13 +33,11 @@
   "Terms of Conditions ": "شروط الشروط ",
   "and\n": "و\n",
   "Privacy of Policy ": "خصوصية السياسة ",
-
   //  Signup Screen
   "Welcome!": "مرحباً!",
   "Confirm Password": "تأكيد كلمة المرور",
   "Already have an account?": "هل لديك حساب بالفعل؟",
   " Try Again ": "حاول ثانية ",
-
   // Forget Password Screen
   "Enter the email address associated with your account.":
       "أدخل عنوان البريد الإلكتروني المرتبط بحسابك.",
@@ -50,11 +46,8 @@
   "Enter email": "أدخل البريد الإلكتروني",
   "Send": "يرسل",
   "Forget Password":"هل نسيت كلمة السر",
-  
-
   // Home Screen
   "See All": "رؤية الكل",
-
   // Collection Screen
   "Filter": "تصفية حسب",
   "COLOR": "لون",
@@ -62,8 +55,6 @@
   "CLEAR ALL": "مسح الكل",
   "VIEW": "منظر",
   "Gender": "جنس",
-
-
     // Quick By
   "Quick By": "Quick By",
   "ahmed":"dev"
