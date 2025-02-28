@@ -8,15 +8,16 @@ import 'package:golden_doctor/languages/english_language.dart';
 import 'package:golden_doctor/models/fonts_model.dart';
 import 'package:golden_doctor/models/language/language_model.dart';
 import 'package:golden_doctor/models/products_colors_model.dart';
+import 'package:golden_doctor/models/static_pages_model/static_pages_model.dart';
 import 'package:golden_doctor/models/traqnslation_model/translation_model.dart';
 import 'package:golden_doctor/utils/app_fonts.dart';
 
-List<TranslationModel> homePageTranslations = [];
-List<TranslationModel> filtersTranslations = [];
-List<TranslationModel> navigationTranslations = [];
-List<TranslationModel> staticPagesTranslations = [];
-List<TranslationModel> otherTranslations = [];
-List<ColorPalette> colorPallete = [];
+// List<TranslationModel> homePageTranslations = [];
+// List<TranslationModel> filtersTranslations = [];
+// List<TranslationModel> navigationTranslations = [];
+// List<TranslationModel> staticPagesTranslations = [];
+// List<TranslationModel> otherTranslations = [];
+// List<ColorPalette> colorPallete = [];
 
 //////////////////////////////////////////////////////////////////       Font Seeting  Provider    /////////////////////////////////////////////////////////////////
 final fontSettingsProvider = FutureProvider<FontSettings>((ref) async {
@@ -179,26 +180,27 @@ final getTranslationProvider = FutureProvider.autoDispose<void>((ref) async {
   }
 });
 
-// final getLanguageProvider = FutureProvider((ref) async {
-//   try {
-//     final doc = await FirebaseFirestore.instance
-//         .collection('languages')
-//         // .doc('fontSettings')
-//         .doc('languages')
-//         .get();
-//     print('document data ==== ${doc.data()}');
-//     // if (doc.exists && doc.data() != null) {
-//     //   print('data======');
-//     //   return FontSettings.fromMap(
-//     //       doc.data()!); // Assumes fromMap is implemented
-//     // } else {
-//     //   throw Exception("Document does not exist or has no data");
-//     // }
-//   } catch (e) {
-//     print('Error fetching font settings: $e');
-//     rethrow; // This will trigger the error state in your provider
-//   }
-// });
+final getPagesProvider = FutureProvider<PagesData>((ref) async {
+  try {
+    print('========= Pages data Function =======');
+    final doc = await FirebaseFirestore.instance
+        .collection('pages')
+        .doc('static_pages')
+        .get();
+
+    print('document Pages data ==== ${doc.data()}');
+
+    if (doc.exists && doc.data() != null) {
+      return PagesData.fromMap(doc.data()!);
+    } else {
+      throw Exception("Document does not exist or has no data");
+    }
+  } catch (e) {
+    print('Error fetching pages: $e');
+    rethrow;
+  }
+});
+
 
 //////////////////////////////////////////////////////////////////       Color  Provider    /////////////////////////////////////////////////////////////////
 // final getColorProvider = FutureProvider((ref) async {

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:golden_doctor/views/authentication/forget_password.dart';
 import 'package:golden_doctor/views/authentication/login_screen.dart';
+import 'package:golden_doctor/views/authentication/reset_password_screen.dart';
 import 'package:golden_doctor/views/authentication/signup_screen.dart';
 import 'package:golden_doctor/views/checkout/checkout_screen.dart';
 import 'package:golden_doctor/views/home_screen.dart';
 import 'package:golden_doctor/views/navigation_screen/navigation_screen.dart';
+import 'package:golden_doctor/views/orders_screens/order_screen.dart';
 import 'package:golden_doctor/views/product_detail_pages/embroidery_screen.dart';
 import 'package:golden_doctor/views/product_detail_pages/online_product_details.dart';
 import 'package:golden_doctor/views/product_detail_pages/product_detail_screen.dart';
@@ -14,6 +16,7 @@ import 'package:golden_doctor/views/splash_screen.dart';
 import 'package:golden_doctor/views/collection_screen/collection_screen.dart';
 import 'package:golden_doctor/views/collection_screen/filter_screen.dart';
 import 'package:golden_doctor/views/set_builder_screen.dart/set_builder_screen.dart';
+import 'package:golden_doctor/views/static_pages/static_pages_screen.dart';
 import 'package:golden_doctor/views/welcome_screen.dart';
 
 import '../views/bottomnavigationbar/bottomnavbar_screen.dart';
@@ -76,6 +79,26 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/forgetPasswordScreen',
       builder: (context, state) => const ForgetPasswordScreen(),
+    ),
+    GoRoute(
+      path: '/orderScreen',
+      builder: (context, state) => const OrderScreen(),
+    ),
+    GoRoute(
+      path: '/resetPasswordScreen',
+      builder: (context, state) => const ResetPasswordScreen(),
+    ),
+    GoRoute(
+      path: '/staticPagesScreen',
+      name: "staticPagesScreen",
+      builder: (context, state) {
+        Map<String, dynamic> params = state.extra as Map<String, dynamic>;
+        return StaticPagesScreen(
+          // key: ValueKey(params["productNode"].id),
+          singlePage: params["singlePage"],
+        );
+      },
+      // builder: (context, state) => const StaticPagesScreen(),
     ),
     GoRoute(
       path: '/productDetailScreen',

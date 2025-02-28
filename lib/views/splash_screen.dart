@@ -50,6 +50,9 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
+// print('SplashScreen');
+//       ref.watch(getPagesProvider);
+
     // ref.read(getTranslationProvider.notifier).fetchNavigation();
    ref.watch(getColorProvider);
 

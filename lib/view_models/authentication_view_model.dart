@@ -144,9 +144,7 @@ class ApiClass extends ChangeNotifier {
     //   ShearedprefService.setUserLoggedIn(false);
     //   ShearedprefService.setUserAccessToken("");
     // });
-    setUserLoginStatus(false);
     Fluttertoast.showToast(msg: " Logout Successfully ");
-    // context.go("/wellcomeScreen");
   }
 
 // Profile
@@ -155,7 +153,7 @@ class ApiClass extends ChangeNotifier {
     String token,
   ) async {
     addboleanValue(true);
-    String userToken = ShearedprefService.getUserAccessToken()!;
+    // String userToken = ShearedprefService.getUserAccessToken()!;
 
     try {
       final response = await http.post(
@@ -179,7 +177,7 @@ class ApiClass extends ChangeNotifier {
         }
       ''',
           'variables': {
-            'customerAccessToken': userToken,
+            'customerAccessToken': token,
           },
         }),
       );
