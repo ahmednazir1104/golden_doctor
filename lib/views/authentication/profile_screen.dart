@@ -199,169 +199,179 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 )
               : authenticationrepository.boleanValue
                   ? Center(child: CircularProgressIndicator())
-                  : Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 18.w),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        // mainAxisSize: MainAxisSize.max,
-                        children: [
-                          authenticationrepository.profileModel == null
-                              ? SizedBox()
-                              : Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 6.w,
-                                    vertical: 18.h,
+                  : SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 18.w),
+                        child: Column(
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // mainAxisSize: MainAxisSize.max,
+                          children: [
+                            authenticationrepository.profileModel == null
+                                ? SizedBox()
+                                : Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 6.w,
+                                      vertical: 18.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border:
+                                          Border.all(color: AppColors.grey9c),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                            radius: 36.r,
+                                            child: Text(authenticationrepository
+                                                .profileModel!.firstName![0]
+                                                .toUpperCase())),
+                                        SizedBox(width: appPaddingNormal),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              authenticationrepository
+                                                  .profileModel!.firstName!,
+                                              style: AppTextStyles.body1
+                                                  .copyWith(
+                                                      fontSize: 16.sp,
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                            ),
+                                            Text(
+                                              authenticationrepository
+                                                  .profileModel!.email!,
+                                              style: AppTextStyles.body1
+                                                  .copyWith(
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: AppColors.grey9c),
+                            TabWidget(
+                              tabTitle: 'Orders',
+                              onTap: () {
+                                context.go('/orderScreen');
+                              },
+                            ),
+                            TabWidget(
+                              tabTitle: 'Reset Password',
+                              onTap: () {
+                                context.push('/resetPasswordScreen');
+                              },
+                            ),
+                            pagesData.when(
+                              data: (pagesData) {
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: pagesData.pages.length,
+                                  itemBuilder: (context, index) {
+                                    final page = pagesData.pages[index];
+                                    return TabWidget(
+                                      tabTitle: page.title,
+                                      onTap: () {
+                                        context.push(
+                                          "/staticPagesScreen",
+                                          extra: {
+                                            "singlePage": page,
+                                          },
+                                          // "/online_product_detail_screen",
+                                          // extra: {"productID": singleProduct.id},
+                                        );
+                                      },
+                                    );
+                                    // ListTile(
+                                    //   title: Text(page.title),
+                                    //   subtitle: Text(page.content),
+                                    // );
+                                  },
+                                );
+                              },
+                              loading: () =>
+                                  Center(child: CircularProgressIndicator()),
+                              error: (err, stack) =>
+                                  Center(child: Text("Error: $err")),
+                            ),
+                            SizedBox(height: 15.h),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12.h),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Switch anguage',
+                                    style: AppTextStyles.body1.copyWith(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600),
                                   ),
-                                  child: Row(
+                                  Row(
                                     children: [
-                                      CircleAvatar(
-                                          radius: 36.r,
-                                          child: Text(authenticationrepository
-                                              .profileModel!.firstName![0]
-                                              .toUpperCase())),
-                                      SizedBox(width: appPaddingNormal),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            authenticationrepository
-                                                .profileModel!.firstName!,
-                                            style: AppTextStyles.body1.copyWith(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                          Text(
-                                            authenticationrepository
-                                                .profileModel!.email!,
-                                            style: AppTextStyles.body1.copyWith(
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
+                                      Text(
+                                        AppConstant.selectedLanguage!,
+                                        style: AppTextStyles.body1.copyWith(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      SizedBox(width: 15.w),
+                                      Icon(
+                                        Icons.arrow_forward,
+                                        size: 15,
                                       ),
                                     ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 15.h),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.local_phone_outlined),
+                                  SizedBox(width: 15.w),
+                                  Text(
+                                    '	(+966) 566292585',
+                                    style: AppTextStyles.body1.copyWith(
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w600),
                                   ),
-                                ),
-                          TabWidget(
-                            tabTitle: 'Orders',
-                            onTap: () {
-                              context.go('/orderScreen');
-                            },
-                          ),
-                          TabWidget(
-                            tabTitle: 'Reset Password',
-                            onTap: () {
-                              context.go('/resetPasswordScreen');
-                            },
-                          ),
-                          pagesData.when(
-                            data: (pagesData) {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: pagesData.pages.length,
-                                itemBuilder: (context, index) {
-                                  final page = pagesData.pages[index];
-                                  return TabWidget(
-                                    tabTitle: page.title,
-                                    onTap: () {
-                                      context.push(
-                                        "/staticPagesScreen",
-                                        extra: {"singlePage": page},
-                                        // "/online_product_detail_screen",
-                                        // extra: {"productID": singleProduct.id},
-                                      );
-                                    },
-                                  );
-                                  // ListTile(
-                                  //   title: Text(page.title),
-                                  //   subtitle: Text(page.content),
-                                  // );
-                                },
-                              );
-                            },
-                            loading: () =>
-                                Center(child: CircularProgressIndicator()),
-                            error: (err, stack) =>
-                                Center(child: Text("Error: $err")),
-                          ),
-                          SizedBox(height: 15.h),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.h),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Switch anguage',
-                                  style: AppTextStyles.body1.copyWith(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      AppConstant.selectedLanguage!,
-                                      style: AppTextStyles.body1.copyWith(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    SizedBox(width: 15.w),
-                                    Icon(
-                                      Icons.arrow_forward,
-                                      size: 15,
-                                    ),
-                                  ],
-                                )
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 15.h),
-                            child: Row(
-                              children: [
-                                Icon(Icons.local_phone_outlined),
-                                SizedBox(width: 15.w),
-                                Text(
-                                  '	(+966) 566292585',
-                                  style: AppTextStyles.body1.copyWith(
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
+                            Padding(
+                              padding: EdgeInsets.only(top: 15.h),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.mail_outline),
+                                  SizedBox(width: 15.w),
+                                  Text(
+                                    'sales@GoldenDrs.com',
+                                    style: AppTextStyles.body1.copyWith(
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 15.h),
-                            child: Row(
-                              children: [
-                                Icon(Icons.mail_outline),
-                                SizedBox(width: 15.w),
-                                Text(
-                                  'sales@GoldenDrs.com',
-                                  style: AppTextStyles.body1.copyWith(
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
+                            SizedBox(height: 15.h),
+                            AppButtons.myprimaryButton(
+                              height: 50.h,
+                              text: 'Logout',
+                              onPressed: () {
+                                authenticationrepositoryRead.logOut(context);
+                                setState(() {
+                                  userToken = '';
+                                });
+                              },
                             ),
-                          ),
-                          SizedBox(height: 15.h),
-                          AppButtons.myprimaryButton(
-                            height: 50.h,
-                            text: 'Logout',
-                            onPressed: () {
-                              authenticationrepositoryRead.logOut(context);
-                              setState(() {
-                                userToken = '';
-                              });
-                            },
-                          ),
-                          SizedBox(height: appPaddingLarge),
-                        ],
+                            SizedBox(height: appPaddingLarge),
+                          ],
+                        ),
                       ),
                     ),
     );

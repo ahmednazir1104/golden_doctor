@@ -4,6 +4,7 @@ import 'package:golden_doctor/views/authentication/forget_password.dart';
 import 'package:golden_doctor/views/authentication/login_screen.dart';
 import 'package:golden_doctor/views/authentication/reset_password_screen.dart';
 import 'package:golden_doctor/views/authentication/signup_screen.dart';
+import 'package:golden_doctor/views/brand_screen/brand_screen.dart';
 import 'package:golden_doctor/views/checkout/checkout_screen.dart';
 import 'package:golden_doctor/views/home_screen.dart';
 import 'package:golden_doctor/views/navigation_screen/navigation_screen.dart';
@@ -87,6 +88,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/resetPasswordScreen',
       builder: (context, state) => const ResetPasswordScreen(),
+    ),
+    GoRoute(
+      path: '/brandScreen',
+      builder: (context, state) => const BrandScreen(),
     ),
     GoRoute(
       path: '/staticPagesScreen',

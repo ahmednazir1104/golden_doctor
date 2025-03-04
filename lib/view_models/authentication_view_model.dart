@@ -222,12 +222,10 @@ class ApiClass extends ChangeNotifier {
     String body = reSetPasswordQuery(email: "email");
     Map<String, dynamic> response =
         await apiBaseHelper.post(url: '', data: body);
-    if (kDebugMode) {
-      print(response);
-      print("1: ${response['data']['customerRecover'].toString()}");
-      print("2: ${response['data']['errors'].toString()}");
-      print("3: ${response['data']['customerUserErrors'].toString()}");
-    }
+    print(response);
+    print("1: ${response['data']['customerRecover'].toString()}");
+    print("2: ${response['data']['errors'].toString()}");
+    print("3: ${response['data']['customerUserErrors'].toString()}");
     if (response['data']['customerRecover'].toString() == "null") {
       Fluttertoast.showToast(msg: response['errors'][0]['message']);
       // profileModel = ProfileModel.fromJson(accessToken);
@@ -255,58 +253,9 @@ class ApiClass extends ChangeNotifier {
     }
   }
 
-// Starting Social Authentication From here
-//    1. Google Authentication
 
-  // Future signInWithGoogle() async {
-  //   try {
-  //     log('start fun ');
-  //     final GoogleSignInAccount? googleSignInAccount =
-  //         await googleSignIn.signIn();
-  //     log('start fun  1111 ');
-  //     final GoogleSignInAuthentication googleSignInAuthentication =
-  //         await googleSignInAccount!.authentication;
-  //     log('start fun 222');
-  //     log('Token === ${googleSignInAuthentication.accessToken}');
-  //     final AuthCredential credential = GoogleAuthProvider.credential(
-  //       accessToken: googleSignInAuthentication.accessToken,
-  //       idToken: googleSignInAuthentication.idToken,
-  //     );
 
-  //     log('start fun  33333 ');
 
-  //     final UserCredential userCredential =
-  //         await FirebaseAuth.instance.signInWithCredential(credential);
-  //     log('credentials === ${userCredential.user!.displayName}');
-
-  //     log('start fun  44444');
-  //     final User? user = userCredential.user;
-  //     log('start fun 55555');
-  //     log('user === ${user!.displayName}');
-  //     // Use the user object for further operations or navigate to a new screen.
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-
-  //   // Trigger the authentication flow
-  //   // final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-  //   // Obtain the auth details from the request
-  //   // final GoogleSignInAuthentication? googleAuth =
-  //   //     await googleUser?.authentication;
-
-  //   // log('Access Token = ${googleAuth?.accessToken}');
-  //   // log('Access Token = ${googleAuth?.idToken}');
-  //   // Create a new credential
-
-  //   // final credential = GoogleAuthProvider.credential(
-  //   //   accessToken: googleAuth?.accessToken,
-  //   //   idToken: googleAuth?.idToken,
-  //   // );
-
-  //   // // Once signed in, return the UserCredential
-  //   // return await FirebaseAuth.instance.signInWithCredential(credential);
-  // }
 }
 
 final apiServiceProvider = ChangeNotifierProvider<ApiClass>((ref) {
