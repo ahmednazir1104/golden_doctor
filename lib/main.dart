@@ -58,20 +58,26 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final graphqlconnection = GraphQlHelper();
+    // final graphqlconnection = GraphQlHelper();
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (BuildContext context, Widget? child) {
-        return GraphQLProvider(
-          client: graphqlconnection.client,
-          child: MaterialApp.router(
+        return MaterialApp.router(
             routerConfig: appRouter,
             debugShowCheckedModeBanner: false,
             title: AppConstant.appName,
             theme: myTheme(context),
-          ),
-        );
+          );
+        // GraphQLProvider(
+        //   client: graphqlconnection.client,
+        //   child: MaterialApp.router(
+        //     routerConfig: appRouter,
+        //     debugShowCheckedModeBanner: false,
+        //     title: AppConstant.appName,
+        //     theme: myTheme(context),
+        //   ),
+        // );
       },
     );
   }

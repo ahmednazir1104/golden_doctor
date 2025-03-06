@@ -896,7 +896,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Add Embroidery".tr),
+                                          Text(widget.singleProduct
+                                                  .embroidaryHeadings?.tr ??
+                                              "Add Embroidery".tr),
                                           Text("From 14 SAR".tr),
                                         ],
                                       ),
@@ -1028,7 +1030,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             minTileHeight: 5.h,
                             tilePadding: EdgeInsets.all(0),
                             title: Text(
-                              "DESCRIPTION",
+                              // "DESCRIPTION",
+
+                              widget.singleProduct.collapsibleHeading1!,
                               style: AppTextStyles.headline3.copyWith(
                                 fontWeight: FontWeight.w700,
                               ),
@@ -1040,7 +1044,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             ),
                             children: [
                               Html(
-                                data: widget.singleProduct.descriptionHtml,
+                                data: widget
+                                    .singleProduct.collapsibleDescription1,
                               ),
                             ],
                           ),
@@ -1049,7 +1054,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             minTileHeight: 5.h,
                             tilePadding: EdgeInsets.all(0),
                             title: Text(
-                              "DELIVERY & RETURNS",
+                              // "DELIVERY & RETURNS",
+                              widget.singleProduct.collapsibleHeading2!,
                               style: AppTextStyles.headline3.copyWith(
                                 fontWeight: FontWeight.w700,
                               ),
@@ -1061,7 +1067,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             ),
                             children: [
                               Html(
-                                data: "",
+                                data: widget
+                                    .singleProduct.collapsibleDescription2,
                               ),
                             ],
                           ),

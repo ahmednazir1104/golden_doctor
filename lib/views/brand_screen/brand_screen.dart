@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:golden_doctor/utils/app_fonts.dart';
 import 'package:golden_doctor/view_models/brand_view_model/brand_view_model.dart';
 
@@ -16,7 +15,7 @@ class BrandScreen extends ConsumerWidget {
           style: AppTextStyles.body1,
         ),
       ),
-      body:    getBrandAsync.when(
+      body:getBrandAsync.when(
         data: (brandVal) {
           return
         Text(brandVal.toString());

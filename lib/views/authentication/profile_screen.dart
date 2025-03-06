@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:golden_doctor/models/language/language_model.dart';
 import 'package:golden_doctor/resources/services/shearedpreference_service.dart';
 import 'package:golden_doctor/resources/widgets/profile_widget/tab_widget.dart';
 import 'package:golden_doctor/resources/widgets/universal_widget/app_button.dart';
@@ -20,6 +22,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  LanguageModel? selectedLanguage;
   @override
   void initState() {
     super.initState();
@@ -46,6 +49,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final pagesData = ref.watch(getPagesProvider);
     final authenticationrepository = ref.watch(apiServiceProvider);
     final authenticationrepositoryRead = ref.read(apiServiceProvider.notifier);
+    final getLanguageAsync = ref.watch(getLanguageProvider);
     // String userToken = ShearedprefService.getUserAccessToken()!;
 
     return Scaffold(
@@ -118,21 +122,83 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               style: AppTextStyles.body1.copyWith(
                                   fontSize: 16.sp, fontWeight: FontWeight.w600),
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  AppConstant.selectedLanguage!,
-                                  style: AppTextStyles.body1.copyWith(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(width: 15.w),
-                                Icon(
-                                  Icons.arrow_forward,
-                                  size: 15,
-                                ),
-                              ],
-                            )
+
+                            getLanguageAsync.when(
+                              data: (languages) {
+                                return DropdownButton<LanguageModel>(
+                                  iconEnabledColor: AppColors.grey,
+                                  iconDisabledColor: AppColors.grey,
+                                  underline: SizedBox(),
+                                  padding: EdgeInsets.all(0),
+                                  value: selectedLanguage,
+                                  dropdownColor: AppColors.myPrimary,
+                                  hint: Row(
+                                    spacing: 5.w,
+                                    children: [
+                                      Icon(
+                                        Icons.language,
+                                        color: AppColors.myScaffold,
+                                      ),
+                                      Text(
+                                        AppConstant.selectedLanguage!,
+                                        style: AppTextStyles.headline2,
+                                      ),
+                                    ],
+                                  ),
+                                  items: languages.map((language) {
+                                    return DropdownMenuItem<LanguageModel>(
+                                      value: language,
+                                      child: Row(
+                                        children: [
+                                          Image.network(
+                                            language.iconSrc,
+                                            width: 24,
+                                            height: 24,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          SizedBox(width: 10.w),
+                                          Text(
+                                            language.title,
+                                            style: AppTextStyles.headline2,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (LanguageModel? newLanguage) {
+                                    setState(() {
+                                      if (kDebugMode) {
+                                        print(
+                                            'Selected Language: ${newLanguage?.title}');
+                                      }
+                                      selectedLanguage = newLanguage;
+                                      ShearedprefService.setLanguage(
+                                          selectedLanguage!.label.toString());
+                                      AppConstant.selectedLanguage =
+                                          selectedLanguage!.label.toString();
+                                    });
+                                  },
+                                );
+                              },
+                              loading: () => CircularProgressIndicator(),
+                              error: (err, stack) => Text('Error: $err'),
+                            ),
+
+                            // Row(
+                            //   children: [
+                            //     Text(
+                            //       AppConstant.selectedLanguage!,
+                            //       style: AppTextStyles.body1.copyWith(
+                            //           fontSize: 16.sp,
+                            //           fontWeight: FontWeight.w600),
+                            //     ),
+                            //     SizedBox(width: 15.w),
+                            //     Icon(
+                            //       Icons.arrow_forward,
+                            //       size: 15,
+                            //     ),
+                            //   ],
+                            // )
                           ],
                         ),
                       ),
@@ -310,21 +376,93 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        AppConstant.selectedLanguage!,
-                                        style: AppTextStyles.body1.copyWith(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      SizedBox(width: 15.w),
-                                      Icon(
-                                        Icons.arrow_forward,
-                                        size: 15,
-                                      ),
-                                    ],
-                                  )
+
+                                  getLanguageAsync.when(
+                                    data: (languages) {
+                                      return DropdownButton<LanguageModel>(
+                                        iconEnabledColor: AppColors.myScaffold,
+                                        iconDisabledColor: AppColors.myScaffold,
+                                        underline: SizedBox(),
+                                        padding: EdgeInsets.all(0),
+                                        value: selectedLanguage,
+                                        dropdownColor: AppColors.myPrimary,
+                                        hint: Row(
+                                          spacing: 5.w,
+                                          children: [
+                                            Icon(
+                                              Icons.language,
+                                              color: AppColors.myScaffold,
+                                            ),
+                                            Text(
+                                              AppConstant.selectedLanguage!,
+                                              style: AppTextStyles.headline2
+                                                  .copyWith(
+                                                      color:
+                                                          AppColors.myScaffold),
+                                            ),
+                                          ],
+                                        ),
+                                        items: languages.map((language) {
+                                          return DropdownMenuItem<
+                                              LanguageModel>(
+                                            value: language,
+                                            child: Row(
+                                              children: [
+                                                Image.network(
+                                                  language.iconSrc,
+                                                  width: 24,
+                                                  height: 24,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                SizedBox(width: 10.w),
+                                                Text(
+                                                  language.title,
+                                                  style: AppTextStyles.headline2
+                                                      .copyWith(
+                                                          color: AppColors
+                                                              .myScaffold),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged:
+                                            (LanguageModel? newLanguage) {
+                                          setState(() {
+                                            if (kDebugMode) {
+                                              print(
+                                                  'Selected Language: ${newLanguage?.title}');
+                                            }
+                                            selectedLanguage = newLanguage;
+                                            ShearedprefService.setLanguage(
+                                                selectedLanguage!.label
+                                                    .toString());
+                                            AppConstant.selectedLanguage =
+                                                selectedLanguage!.label
+                                                    .toString();
+                                          });
+                                        },
+                                      );
+                                    },
+                                    loading: () => CircularProgressIndicator(),
+                                    error: (err, stack) => Text('Error: $err'),
+                                  ),
+
+                                  // Row(
+                                  //   children: [
+                                  //     Text(
+                                  //       AppConstant.selectedLanguage!,
+                                  //       style: AppTextStyles.body1.copyWith(
+                                  //           fontSize: 16.sp,
+                                  //           fontWeight: FontWeight.w600),
+                                  //     ),
+                                  //     SizedBox(width: 15.w),
+                                  //     Icon(
+                                  //       Icons.arrow_forward,
+                                  //       size: 15,
+                                  //     ),
+                                  //   ],
+                                  // )
                                 ],
                               ),
                             ),

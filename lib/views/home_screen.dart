@@ -24,8 +24,8 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sectionsState = ref.watch(sectionsProvider);
-    final authenticationrepository = ref.watch(apiServiceProvider);
-    final authenticationrepositoryRead = ref.read(apiServiceProvider.notifier);
+    // final authenticationrepository = ref.watch(apiServiceProvider);
+    // final authenticationrepositoryRead = ref.read(apiServiceProvider.notifier);
 
     // final selectedLanguage = ref.watch(languageProvider);
 

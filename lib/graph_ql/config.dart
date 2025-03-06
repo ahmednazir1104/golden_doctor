@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:golden_doctor/utils/app_constant.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphQlHelper {
+  GraphQlHelper(){
+    print("new object of client");
+    print("selected lan ${ AppConstant.selectedLanguage}");
+
+  }
   static HttpLink httpLink = HttpLink(
     // 'https://ethnicpk.myshopify.com/api/2024-01/graphql',       // Ethnic
     'https://scrubser.myshopify.com/api/2025-01/graphql', //  screber
@@ -10,7 +16,11 @@ class GraphQlHelper {
       'X-Shopify-Storefront-Access-Token':
           '1acbba2f06475c4427254dd8372b60e7', //scruber
       // 'X-Shopify-Storefront-Access-Token': '75e049669db9a451ebba44c7a193b3f1',
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Accept-Language': //'ar'
+      AppConstant.selectedLanguage == null
+          ? 'en'
+          : AppConstant.selectedLanguage!.toLowerCase(),
     },
   );
   static Link linke = httpLink;

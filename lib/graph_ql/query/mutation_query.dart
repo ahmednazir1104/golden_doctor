@@ -137,9 +137,19 @@ String fetchProductwithCollectionIdfn(String id, {String? cursor}) {
                                 {namespace: "custom",key: "product_recomandation"
                                 },
                                 {namespace: "custom", key: "embroidery_product"
-                                }
+                                },
                                 {namespace: "custom", key: "you_may_also_like"
-                                }
+                                },
+                                {namespace: "custom", key: "collapsible_heading_1"
+                                },
+                                {namespace: "custom", key: "collapsible_heading_2"
+                                },
+                                {namespace: "custom", key: "collapsible_description_1"
+                                },
+                                {namespace: "custom", key: "collapsible_description_2"
+                                },
+                                {namespace: "custom", key: "embroidary_headings"
+                                },
                             ]) {
                         key
                         value
@@ -218,9 +228,19 @@ String fetchProductListByIDs(String productIDs) {
                                 {namespace: "custom",key: "product_recomandation"
                                 },
                                 {namespace: "custom", key: "embroidery_product"
-                                }
+                                },
                                 {namespace: "custom", key: "you_may_also_like"
-                                }
+                                },
+                                {namespace: "custom", key: "collapsible_heading_1"
+                                },
+                                {namespace: "custom", key: "collapsible_heading_2"
+                                },
+                                {namespace: "custom", key: "collapsible_description_1"
+                                },
+                                {namespace: "custom", key: "collapsible_description_2"
+                                },
+                                {namespace: "custom", key: "embroidary_headings"
+                                },
                             ]) {
                         key
                         value

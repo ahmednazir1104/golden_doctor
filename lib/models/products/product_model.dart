@@ -145,6 +145,12 @@ class ProductNode {
   final String? emborideryMetafield;
   final String? productRecomandationMetafield;
   final String? youMayAlsoLikeMetafield;
+  final String? collapsibleHeading1;
+  final String? collapsibleHeading2;
+  final String? collapsibleDescription1;
+  final String? collapsibleDescription2;
+  final String? embroidaryHeadings;
+
 
   String? variantColor;
 
@@ -167,6 +173,12 @@ class ProductNode {
     this.variantColor,
     this.productRecomandationMetafield,
     this.youMayAlsoLikeMetafield,
+    this.collapsibleHeading1,
+    this.collapsibleHeading2,
+    this.collapsibleDescription1,
+    this.collapsibleDescription2,
+    this.embroidaryHeadings,
+    
   });
 
   factory ProductNode.fromJson(Map<String, dynamic> json) {
@@ -193,6 +205,16 @@ class ProductNode {
           items: json["metafields"], key: "product_recomandation"),
       youMayAlsoLikeMetafield:
           _getValueForKey(items: json["metafields"], key: "you_may_also_like"),
+          collapsibleHeading1:
+          _getValueForKey(items: json["metafields"], key: "collapsible_heading_1"),
+          collapsibleHeading2:
+          _getValueForKey(items: json["metafields"], key: "collapsible_heading_2"),
+          collapsibleDescription1:
+          _getValueForKey(items: json["metafields"], key: "collapsible_description_1"),
+          collapsibleDescription2:
+          _getValueForKey(items: json["metafields"], key: "collapsible_description_2"),
+          embroidaryHeadings:
+          _getValueForKey(items: json["metafields"], key: "embroidary_headings"),
     );
   }
 

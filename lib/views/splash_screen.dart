@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -150,6 +152,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                               if (kDebugMode) {
                                 print(
                                     'Selected Language: ${newLanguage?.title}');
+                                    log(
+                                    'Selected Language: ${newLanguage?.title}');
+                                    log('Selected Language: ${newLanguage?.label}');
                               }
                               selectedLanguage = newLanguage;
                               ShearedprefService.setLanguage(
