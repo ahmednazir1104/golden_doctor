@@ -25,6 +25,7 @@ class GraphQlHelper {
       // AppConstant.selectedLanguage == 'en'
       //     ? 'en'
       //     : 'ar',
+      
     },
   );
   
