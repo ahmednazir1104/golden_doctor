@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:golden_doctor/graph_ql/config.dart';
 import 'package:golden_doctor/models/language/language_model.dart';
 import 'package:golden_doctor/resources/services/shearedpreference_service.dart';
 import 'package:golden_doctor/resources/widgets/profile_widget/tab_widget.dart';
@@ -380,25 +381,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                   getLanguageAsync.when(
                                     data: (languages) {
                                       return DropdownButton<LanguageModel>(
-                                        iconEnabledColor: AppColors.myScaffold,
-                                        iconDisabledColor: AppColors.myScaffold,
+                                        // iconEnabledColor: AppColors.myScaffold,
+                                        // iconDisabledColor: AppColors.myScaffold,
                                         underline: SizedBox(),
                                         padding: EdgeInsets.all(0),
                                         value: selectedLanguage,
-                                        dropdownColor: AppColors.myPrimary,
+                                        // dropdownColor: AppColors.myPrimary,
                                         hint: Row(
                                           spacing: 5.w,
                                           children: [
                                             Icon(
                                               Icons.language,
-                                              color: AppColors.myScaffold,
+                                              // color: AppColors.myScaffold,
                                             ),
                                             Text(
                                               AppConstant.selectedLanguage!,
                                               style: AppTextStyles.headline2
-                                                  .copyWith(
-                                                      color:
-                                                          AppColors.myScaffold),
+                                                  // .copyWith(
+                                                  //     color:
+                                                  //         AppColors.myScaffold),
                                             ),
                                           ],
                                         ),
@@ -418,9 +419,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                                 Text(
                                                   language.title,
                                                   style: AppTextStyles.headline2
-                                                      .copyWith(
-                                                          color: AppColors
-                                                              .myScaffold),
+                                                      // .copyWith(
+                                                      //     color: AppColors
+                                                      //         .myScaffold),
                                                 ),
                                               ],
                                             ),
@@ -429,9 +430,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                         onChanged:
                                             (LanguageModel? newLanguage) {
                                           setState(() {
+                                          
                                             if (kDebugMode) {
                                               print(
                                                   'Selected Language: ${newLanguage?.title}');
+
                                             }
                                             selectedLanguage = newLanguage;
                                             ShearedprefService.setLanguage(
@@ -440,6 +443,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                             AppConstant.selectedLanguage =
                                                 selectedLanguage!.label
                                                     .toString();
+
+
+                                                     final graphqlconnection =
+                                                GraphQlHelper();
                                           });
                                         },
                                       );

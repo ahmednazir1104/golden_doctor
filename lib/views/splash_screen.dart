@@ -1,4 +1,4 @@
-
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
@@ -51,12 +51,32 @@ class SplashScreen extends ConsumerStatefulWidget {
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
+  void initState() {
+    super.initState();
+    checkUser();
+  }
+
+  bool? userLogedIn;
+
+  void checkUser() {
+    userLogedIn = ShearedprefService.getUserLoggedIn();
+
+    Timer(const Duration(seconds: 0), () {
+      if (userLogedIn == null || userLogedIn == false) {
+        userLogedIn = false;
+      } else {
+        userLogedIn = true;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
 // print('SplashScreen');
 //       ref.watch(getPagesProvider);
 
     // ref.read(getTranslationProvider.notifier).fetchNavigation();
-   ref.watch(getColorProvider);
+    ref.watch(getColorProvider);
 
     // final colorList = ref.watch(colorPaletteListProvider);
     // log('colorList ==== ${colorList.length}');
@@ -152,9 +172,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                               if (kDebugMode) {
                                 print(
                                     'Selected Language: ${newLanguage?.title}');
-                                    log(
-                                    'Selected Language: ${newLanguage?.title}');
-                                    log('Selected Language: ${newLanguage?.label}');
+                                log('Selected Language: ${newLanguage?.title}');
+                                log('Selected Language: ${newLanguage?.label}');
                               }
                               selectedLanguage = newLanguage;
                               ShearedprefService.setLanguage(
@@ -206,8 +225,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        context.go('/wellcomeScreen');
-                        // context.go('/nav_barScreen');
+                        if (userLogedIn == null || userLogedIn == false) {
+                          context.go('/wellcomeScreen');
+                        } else {
+                          context.go('/nav_barScreen');
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(

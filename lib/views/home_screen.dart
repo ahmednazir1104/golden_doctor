@@ -15,7 +15,6 @@ import 'package:golden_doctor/utils/app_images.dart';
 import 'package:golden_doctor/resources/widgets/home_widgets/category_carousel_widget.dart';
 import 'package:golden_doctor/resources/widgets/home_widgets/product_carusel_widget.dart';
 import 'package:golden_doctor/resources/widgets/home_widgets/single_banner_widget.dart';
-import 'package:golden_doctor/view_models/authentication_view_model.dart';
 import 'package:golden_doctor/view_models/home_view_model/home_view_model.dart';
 
 class HomeScreen extends ConsumerWidget {
