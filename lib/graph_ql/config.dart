@@ -20,11 +20,14 @@ class GraphQlHelper {
           '1acbba2f06475c4427254dd8372b60e7', //scruber
       // 'X-Shopify-Storefront-Access-Token': '75e049669db9a451ebba44c7a193b3f1',
       'Accept': 'application/json',
-      'Accept-Language':  ShearedprefService.getLanguage()!
+      'Accept-Language':  
+      // ShearedprefService.getLanguage()!
       // 'en'
       // AppConstant.selectedLanguage == 'en'
-      //     ? 'en'
-      //     : 'ar',
+          // ? 
+          'en',
+          // :
+          //  'ar',
       
     },
   );

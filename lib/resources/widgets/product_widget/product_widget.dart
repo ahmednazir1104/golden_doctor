@@ -43,6 +43,7 @@ class ProductWidget extends StatelessWidget {
                     // bottom: 0,
                     child: CachedNetworkImage(
                       fit: BoxFit.fill,
+                      fadeInDuration: Duration(milliseconds: 0),
                       imageUrl: singleProduct.images.edges[0].node.url,
                       // imageUrl: singleProduct.variants.edges[0].node.image.url,
                       // 'https://pixlr.com/images/generator/photo-generator.webp',
@@ -52,7 +53,9 @@ class ProductWidget extends StatelessWidget {
                         height: 202.h,
                         child: Center(
                           child: Image(
+                            height: 50,
                             image: AssetImage(
+                              
                               AppImages.logoImage,
                             ),
                           ),
