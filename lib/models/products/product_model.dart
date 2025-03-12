@@ -151,7 +151,6 @@ class ProductNode {
   final String? collapsibleDescription2;
   final String? embroidaryHeadings;
 
-
   String? variantColor;
 
   ProductNode({
@@ -178,7 +177,6 @@ class ProductNode {
     this.collapsibleDescription1,
     this.collapsibleDescription2,
     this.embroidaryHeadings,
-    
   });
 
   factory ProductNode.fromJson(Map<String, dynamic> json) {
@@ -205,16 +203,16 @@ class ProductNode {
           items: json["metafields"], key: "product_recomandation"),
       youMayAlsoLikeMetafield:
           _getValueForKey(items: json["metafields"], key: "you_may_also_like"),
-          collapsibleHeading1:
-          _getValueForKey(items: json["metafields"], key: "collapsible_heading_1"),
-          collapsibleHeading2:
-          _getValueForKey(items: json["metafields"], key: "collapsible_heading_2"),
-          collapsibleDescription1:
-          _getValueForKey(items: json["metafields"], key: "collapsible_description_1"),
-          collapsibleDescription2:
-          _getValueForKey(items: json["metafields"], key: "collapsible_description_2"),
-          embroidaryHeadings:
-          _getValueForKey(items: json["metafields"], key: "embroidary_headings"),
+      collapsibleHeading1: _getValueForKey(
+          items: json["metafields"], key: "collapsible_heading_1"),
+      collapsibleHeading2: _getValueForKey(
+          items: json["metafields"], key: "collapsible_heading_2"),
+      collapsibleDescription1: _getValueForKey(
+          items: json["metafields"], key: "collapsible_description_1"),
+      collapsibleDescription2: _getValueForKey(
+          items: json["metafields"], key: "collapsible_description_2"),
+      embroidaryHeadings: _getValueForKey(
+          items: json["metafields"], key: "embroidary_headings"),
     );
   }
 
@@ -236,9 +234,9 @@ class ProductNode {
 }
 
 String? _getValueForKey({List<dynamic>? items, required String key}) {
-  if (items == null) return null;
+  if (items == null || items == 'null') return null;
   final item = items.firstWhereOrNull((element) => element?['key'] == key);
-  return item?['value'];
+  return item?['value']??"";
 }
 
 class Options {

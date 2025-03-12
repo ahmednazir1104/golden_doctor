@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:golden_doctor/resources/services/shearedpreference_service.dart';
 import 'package:golden_doctor/utils/app_constant.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 

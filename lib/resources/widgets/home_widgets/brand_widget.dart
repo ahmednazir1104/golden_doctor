@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -22,16 +21,31 @@ class BrandWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(right: 12.w, left: 12.w, bottom: 12.h),
-            child: Text(
-              section.title,
-              // 'Popular Brands',
-              style: AppTextStyles.headline2,
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  section.title,
+                  // 'Popular Brands',
+                  style: AppTextStyles.headline2,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.push('/brandScreen');
+                  },
+                  child: Text(
+                    'See All',
+                    style: AppTextStyles.headline2,
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(
             height: 65.h,
-            child: ListView.builder(
+            child:
+             ListView.builder(
               itemCount: section.body.length,
               // AppConstant.brandList.length,
               scrollDirection: Axis.horizontal,
@@ -39,7 +53,7 @@ class BrandWidget extends StatelessWidget {
                 Brand singleBrand = section.body[index];
                 return InkWell(
                   onTap: () {
-                      context.push(
+                    context.push(
                       "/collection_product_screen",
                       extra: {
                         "collectionID": singleBrand.objId,
