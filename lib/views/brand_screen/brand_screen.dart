@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +11,9 @@ class BrandScreen extends ConsumerWidget {
   const BrandScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final getBrandAsync = ref.watch(getBrandProvider);
+    // final getBrandAsync = ref.watch(getBrandProvider);
+    final brandsAsyncValue = ref.watch(getBrandProvider);
+    // final brandsAsyncValue = ref.watch(getBrandProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -18,58 +21,67 @@ class BrandScreen extends ConsumerWidget {
           style: AppTextStyles.body1,
         ),
       ),
-      body: getBrandAsync.when(
-        data: (brandVal) {
-          return SizedBox(
-            height: 300.h,
-            child: ListView.builder(
-              itemCount: brandVal[0].brands!.length,
-              // AppConstant.brandList.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext context, int index) {
-                // SingleBrand singleBrand =  brandVal[0].brands![index];
-                return InkWell(
-                  onTap: () {
-                    // context.push(
-                    //   "/collection_product_screen",
-                    //   extra: {
-                    //     "collectionID": singleBrand.objId,
-                    //     "collectionName": singleBrand.objName,
-                    //   },
-                    // );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8.w),
-                    height: 65.h,
-                    width: 65.w,
+      body: brandsAsyncValue.when(
+        data: (brandsModel) {
+          final brandsList = brandsModel.brands;
+
+          if (brandsList.isEmpty) {
+            return Center(child: Text('No brands available'));
+          }
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 5.w,
+                  mainAxisSpacing: 6.h,
+                  childAspectRatio: 1.1,
+                ),
+                itemCount: brandsList.length,
+                // scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int index) {
+                  final brand = brandsList[index];
+                  return Container(
                     decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.grey),
                       borderRadius: BorderRadius.circular(4.r),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                              brandVal[0].brands![index].iconSrc.toString())
-                          //  AssetImage(
-                          //   AppConstant.brandList[index],
-                          // ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 120.h,
+                          width: 200.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.r),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                brand.iconSrc.toString(),
+                              ),
+                            ),
                           ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10.h),
+                          child: Text(
+                            brand.brandName,
+                            style: AppTextStyles.body2,
+                          ),
+                        ),
+                      ],
                     ),
-                    child: Text(
-                      brandVal[0].brands![index].brandName.toString(),
-                      style: TextStyle(color: AppColors.black1C),
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           );
-
-          //  Text(brandVal.toString());
         },
-        loading: () => CircularProgressIndicator(),
-        error: (err, stack) => Text(
-          'Error: $err',
-          style: AppTextStyles.body1,
-        ),
+        loading: () => Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(child: Text('Error: $error')),
       ),
     );
   }
